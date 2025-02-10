@@ -1,17 +1,76 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<html lang="en">
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Accueil{% endblock %}</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ asset('assetsfront/images/greenbridge.png') }}">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    {% block stylesheet %}
+        <link href="{{ asset('assetsfront/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assetsfront/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+        <link href="{{ asset('assetsfront/vendor/aos/aos.css') }}" rel="stylesheet">
+        <link href="{{ asset('assetsfront/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assetsfront/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assetsfront/css/main.css') }}" rel="stylesheet">
+    {% endblock %}
+</head>
+
+<body class="index-page">
+
+    <header id="header" class="header d-flex align-items-center position-relative">
+        <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+
+            <a href="{{ path('app_article_index') }}" class="logo d-flex align-items-center">
+                <img src="{{ asset('assetsfront/img/logo.png') }}" alt="GreenBridge">
+            </a>
+
+            <nav id="navmenu" class="navmenu">
+                <ul>
+                    <li><a href="{{ path('app_article_index') }}" class="active">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="services.html">Our Services</a></li>
+                    <li><a href="testimonials.html">Materials</a></li>
+                    <li><a href="testimonials.html">Events</a></li>
+                    <li><a href="testimonials.html">Terrains</a></li>
+                    <li><a href="testimonials.html">E-Learning</a></li>
+                    <li><a href="#blog-section">Blog</a></li>
+
+                    <li class="dropdown">
+                        <a href="#"><span>Login</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                        <ul>
+                            <li><a href="#">Sign in</a></li>
+                            <li><a href="#">Sign-up</a></li>
+                            <li><a href="#">Log Out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            </nav>
+
+        </div>
+    </header>
+
+    <main class="main">
         {% block body %}{% endblock %}
-    </body>
+    </main>
+
+    <!-- Vendor JS Files -->
+    <script src="{{ asset('assetsfront/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assetsfront/vendor/aos/aos.js') }}"></script>
+    <script src="{{ asset('assetsfront/vendor/swiper/swiper-bundle.min.js') }}"></script>
+    <script src="{{ asset('assetsfront/vendor/glightbox/js/glightbox.min.js') }}"></script>
+    <script src="{{ asset('assetsfront/js/main.js') }}"></script>
+
+</body>
+
 </html>
