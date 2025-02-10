@@ -8,7 +8,8 @@
       {% block stylesheetsback %}
       <!-- Favicon -->
       <link rel="shortcut icon" href="{{asset('assetsback/images/greenbridge.png.png')}}">
-      
+      <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+
       <!-- Library / Plugin Css Build -->
       <link rel="stylesheet" href="{{asset('assetsback/css/core/libs.min.css')}}">
       
@@ -944,36 +945,7 @@
 
 
   {% block js %}
-    <!-- Library Bundle Script -->
-    <script src="{{asset('assetsback/js/core/libs.min.js')}}"></script>
-    
-    <!-- External Library Bundle Script -->
-    <script src="{{asset('assetsback/js/core/external.min.js')}}"></script>
-    
-    <!-- Widgetchart Script -->
-    <script src="{{asset('assetsback/js/charts/widgetcharts.js')}}"></script>
-    
-    <!-- mapchart Script -->
-    <script src="{{asset('assetsback/js/charts/vectore-chart.j')}}s"></script>
-    <script src="{{asset('assetsback/js/charts/dashboard.js')}}" ></script>
-    
-    <!-- fslightbox Script -->
-    <script src="{{asset('assetsback/js/plugins/fslightbox.js')}}"></script>
-    
-    <!-- Settings Script -->
-    <script src="{{asset('assetsback/js/plugins/setting.js')}}"></script>
-    
-    <!-- Slider-tab Script -->
-    <script src="{{asset('assetsback/js/plugins/slider-tabs.js')}}"></script>
-    
-    <!-- Form Wizard Script -->
-    <script src="{{asset('assetsback/js/plugins/form-wizard.js')}}"></script>
-    
-    <!-- AOS Animation Plugin-->
-    <script src="{{asset('assetsback/vendor/aos/dist/aos.js')}}"></script>
-    
-    <!-- App Script -->
-    <script src="{{asset('assetsback/js/hope-ui.js')}}" defer></script>
+   
     
     {% endblock %}
 

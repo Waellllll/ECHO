@@ -1,0 +1,157 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}New Materiel{% endblock %}
+
+{% block body %}
+    <div class="container my-4">
+        <h1>Ajouter un nouveau matériel</h1>
+
+        {# We include the "novalidate" attribute to disable browser default messages, 
+           but we do not prevent submission so that Symfony validation runs. #}
+        {{ form_start(form, {
+            'attr': {
+                'class': 'row g-3 needs-validation',
+                'novalidate': 'novalidate'
+            }
+        }) }}
+
+        {# Nom Field #}
+        <div class="col-md-4">
+            {{ form_label(form.nom, 'Nom', { 'label_attr': { 'class': 'form-label' } }) }}
+            {{ form_widget(form.nom, {
+                'attr': {
+                    'class': 'form-control' ~ (form.nom.vars.errors|length > 0 ? ' is-invalid' : '')
+                }
+            }) }}
+            {% if form.nom.vars.errors|length > 0 %}
+                <div class="invalid-feedback d-block">
+                    {% for error in form.nom.vars.errors %}
+                        {{ error.message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        {# Type Field #}
+        <div class="col-md-6">
+            {{ form_label(form.type, 'Type', { 'label_attr': { 'class': 'form-label' } }) }}
+            {{ form_widget(form.type, {
+                'attr': {
+                    'class': 'form-control' ~ (form.type.vars.errors|length > 0 ? ' is-invalid' : '')
+                }
+            }) }}
+            {% if form.type.vars.errors|length > 0 %}
+                <div class="invalid-feedback d-block">
+                    {% for error in form.type.vars.errors %}
+                        {{ error.message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        {# Description Field #}
+        <div class="col-12">
+            {{ form_label(form.description, 'Description', { 'label_attr': { 'class': 'form-label' } }) }}
+            {{ form_widget(form.description, {
+                'attr': {
+                    'class': 'form-control' ~ (form.description.vars.errors|length > 0 ? ' is-invalid' : '')
+                }
+            }) }}
+            {% if form.description.vars.errors|length > 0 %}
+                <div class="invalid-feedback d-block">
+                    {% for error in form.description.vars.errors %}
+                        {{ error.message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        {# Image Field #}
+        <div class="col-md-6">
+            {{ form_label(form.image, 'Image (URL)', { 'label_attr': { 'class': 'form-label' } }) }}
+            {{ form_widget(form.image, {
+                'attr': {
+                    'class': 'form-control' ~ (form.image.vars.errors|length > 0 ? ' is-invalid' : '')
+                }
+            }) }}
+            {% if form.image.vars.errors|length > 0 %}
+                <div class="invalid-feedback d-block">
+                    {% for error in form.image.vars.errors %}
+                        {{ error.message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        {# Marque Field #}
+        <div class="col-md-6">
+            {{ form_label(form.marque, 'Marque', { 'label_attr': { 'class': 'form-label' } }) }}
+            {{ form_widget(form.marque, {
+                'attr': {
+                    'class': 'form-control' ~ (form.marque.vars.errors|length > 0 ? ' is-invalid' : '')
+                }
+            }) }}
+            {% if form.marque.vars.errors|length > 0 %}
+                <div class="invalid-feedback d-block">
+                    {% for error in form.marque.vars.errors %}
+                        {{ error.message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        {# Prix Field #}
+        <div class="col-md-4">
+            {{ form_label(form.prix, 'Prix', { 'label_attr': { 'class': 'form-label' } }) }}
+            {{ form_widget(form.prix, {
+                'attr': {
+                    'class': 'form-control' ~ (form.prix.vars.errors|length > 0 ? ' is-invalid' : '')
+                }
+            }) }}
+            {% if form.prix.vars.errors|length > 0 %}
+                <div class="invalid-feedback d-block">
+                    {% for error in form.prix.vars.errors %}
+                        {{ error.message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        {# Catégorie Field #}
+        <div class="col-md-4">
+            {{ form_label(form.categorie, 'Catégorie', { 'label_attr': { 'class': 'form-label' } }) }}
+            {{ form_widget(form.categorie, {
+                'attr': {
+                    'class': 'form-control' ~ (form.categorie.vars.errors|length > 0 ? ' is-invalid' : '')
+                }
+            }) }}
+            {% if form.categorie.vars.errors|length > 0 %}
+                <div class="invalid-feedback d-block">
+                    {% for error in form.categorie.vars.errors %}
+                        {{ error.message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        {# Submit Button #}
+        <div class="col-12">
+            <button class="btn btn-primary" type="submit">Enregistrer</button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+
+    <a href="{{ path('app_materiel_index') }}">back to list</a>
+
+    {# A minimal script that adds the Bootstrap "was-validated" class on submit;
+       note that we do not prevent the submission so that the form reaches the server. #}
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const formElement = document.querySelector("form.needs-validation");
+        formElement.addEventListener("submit", function () {
+            formElement.classList.add("was-validated");
+        });
+    });
+    </script>
+{% endblock %}
