@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+ 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Accueil{% endblock %}</title>
@@ -27,7 +28,7 @@
 </head>
 
 <body class="index-page">
-
+  {% block head%}
   <header id="header" class="header d-flex align-items-center position-relative">
     <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
@@ -45,7 +46,15 @@
            <li><a href="testimonials.html">Terrains</a></li>
 
           <li><a href="testimonials.html">E-Learning</a></li>
-
+           <li class="dropdown">
+            <a href="#"><span> Workshop </span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="{{path('app_workshop_index')}}">Workshop </a></li>
+              <li class="dropdown">
+              <li><a href="{{ path('app_reservation_index') }}">Reservation</a></li>
+              
+            </ul>
+          </li>
           <li><a href="blog.html">Blog</a></li>
           <li class="dropdown">
             <a href="#"><span> Login </span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
@@ -65,10 +74,11 @@
       </nav>
 
     </div>
+    {% endblock %}
   </header>
 
   <main class="main">
-
+  {% block body %}
     <!-- Hero Section -->
     <section id="hero" class="hero section dark-background">
       <div id="hero-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
@@ -727,11 +737,11 @@
         </div>
       </div>
     </section><!-- /Call To Action Section -->
-
+  {% endblock %}
   </main>
 
   <footer id="footer" class="footer dark-background">
-
+  {% block footer %}
     <div class="footer-top">
       <div class="container">
         <div class="row gy-4">
@@ -820,7 +830,7 @@
 
       </div>
     </div>
-
+  {% endblock %}
   </footer>
 
   <!-- Scroll Top -->
