@@ -67,7 +67,7 @@ final class ElearningController extends AbstractController
             'form' => $form,
         ]);
     }
-
+-02
     #[Route('/{id}', name: 'app_elearning_delete', methods: ['POST'])]
     public function delete(Request $request, Elearning $elearning, EntityManagerInterface $entityManager): Response
     {
