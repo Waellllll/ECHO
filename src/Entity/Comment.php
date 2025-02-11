@@ -14,7 +14,7 @@ class Comment
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $id_article = null;
+    private ?Article $id_article = null;
 
     #[ORM\Column(length: 150, nullable: true)]
     private ?string $comment = null;
@@ -31,12 +31,12 @@ class Comment
         return $this;
     }
 
-    public function getIdArticle(): ?int
+    public function getIdArticle(): ?Article
     {
         return $this->id_article;
     }
 
-    public function setIdArticle(int $id_article): static
+    public function setIdArticle(?Article $id_article): static
     {
         $this->id_article = $id_article;
 

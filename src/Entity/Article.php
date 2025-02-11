@@ -6,6 +6,8 @@ use App\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
+
+
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
 { #[ORM\Id]
@@ -20,7 +22,7 @@ class Article
     #[ORM\Column(length: 100, nullable: true)]
     #[Assert\Length(
         max: 100,
-    //    maxMessage:"Votre mot de passe ne contient pas {{limit }} caractères."
+      maxMessage:"Votre mot de passe ne contient pas {{limit }} caractères."
     )]
     #[Assert\NotBlank(message: 'Description cannot be empty.')]
     private ?string $description = null;
@@ -28,7 +30,14 @@ class Article
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
-    private ?File $imageFile = null;    public function getId(): ?int
+    private ?File $imageFile = null; 
+    #[Assert\File(
+        mimeTypes: ["image/jpeg", "image/png", "image/gif"],
+        mimeTypesMessage: "Please upload a valid image (JPEG, PNG, or GIF).",
+        maxSize: '5M',
+        maxSizeMessage: 'The image cannot be larger than 5MB.'
+    )]
+       public function getId(): ?int
     {
         return $this->id;
     }
