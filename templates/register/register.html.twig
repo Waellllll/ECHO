@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription | GreenBridge</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Réutilisation du style du login */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('https://source.unsplash.com/1600x900/?nature,agriculture') no-repeat center center/cover;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(76, 175, 80, 0.6);
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: moveGlow 6s infinite alternate ease-in-out;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+            width: 450px;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out, scaleUp 1s ease-out;
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            font-size: 1rem;
+            border: 2px solid #81C784;
+            border-radius: 10px;
+            background: white;
+            color: #333;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, #43A047, #2E7D32);
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, background 0.3s ease-in-out;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="glow"></div>
+<div class="glow"></div>
+
+<div class="login-container">
+    <h1>Inscription</h1>
+
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+    <div class="form-group">
+        <label for="email">Email:</label>
+        {{ form_widget(form.email, {'attr': {'class': 'form-control', 'id': 'email', 'placeholder': 'Email'}}) }}
+                         {% if form.email.vars.errors|length > 0 %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form_errors(form.email) }}
+                                    </div>
+                                {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="roles">Roles:</label>
+        {{ form_widget(form.roles, {'attr': {'class': 'form-control', 'id': 'roles'}}) }}
+    </div>
+
+    <div class="form-group">
+        <label for="typeUtilisateur">Type d'utilisateur:</label>
+        {{ form_widget(form.typeUtilisateur, {'attr': {'class': 'form-control', 'id': 'typeUtilisateur'}}) }}
+    </div>
+
+    <div class="form-group">
+        <label for="password">Mot de passe:</label>
+        {{ form_widget(form.password, {'attr': {'class': 'form-control', 'id': 'password', 'placeholder': 'Mot de passe'}}) }}
+        {% if form.password.vars.errors|length > 0 %}
+                             <div class="invalid-feedback d-block">
+
+                                    {{ form_errors(form.password) }}
+                            </div>
+                            {% endif %}
+    </div>
+
+   
+
+    <button type="submit" class="btn-primary">S'inscrire</button>
+
+    {{ form_end(form) }}
+
+    <a href="{{ path('app_login') }}" class="register-link">Déjà un compte ? Connectez-vous</a>
+</div>
+
+</body>
+</html>
