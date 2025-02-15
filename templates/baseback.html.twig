@@ -62,9 +62,7 @@
       background-color: var(--bs-primary-shade-20);
       border-color: var(--bs-primary-shade-20);
     }
-
   </style>
-  
   </head>
   <body class="  ">
   
@@ -410,6 +408,7 @@
        </li>
 
 
+             
              <li class="nav-item">
     <a class="nav-link" data-bs-toggle="collapse" href="#sidebar-workshop" role="button" aria-expanded="false" aria-controls="sidebar-workshop">
         <i class="icon">
@@ -972,10 +971,16 @@
             </div>
           </div>
         </nav>         
+        {% if is_granted('ROLE_ADMIN') %}
+    <a href="{{ path('home') }}" class="btn btn-primary">Aller au Front-Office</a>
+{% endif %}
+
+<a href="{{ path('app_logout') }}" class="btn btn-danger">Déconnexion</a>
+
          {% block body %}
 
 
-
+        
 
          {% endblock %}
 
