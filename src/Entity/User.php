@@ -8,6 +8,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -142,4 +143,8 @@ public function setTypeUtilisateur(UserType $typeUtilisateur): self
     $this->typeUtilisateur = $typeUtilisateur;
     return $this;
 }
+
+
+
+    
 }

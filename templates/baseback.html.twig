@@ -926,6 +926,12 @@
             </div>
           </div>
         </nav>         
+        {% if is_granted('ROLE_ADMIN') %}
+    <a href="{{ path('home') }}" class="btn btn-primary">Aller au Front-Office</a>
+{% endif %}
+
+<a href="{{ path('app_logout') }}" class="btn btn-danger">Déconnexion</a>
+
          {% block body %}
 
 

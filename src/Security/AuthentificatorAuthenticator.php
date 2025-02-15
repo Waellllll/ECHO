@@ -15,39 +15,26 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordC
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
-use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
-
 class AuthentificatorAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
     public const LOGIN_ROUTE = 'app_login';
 
-    public function __construct(
-        private UrlGeneratorInterface $urlGenerator,
-        private UserProviderInterface $userProvider
-    ) {
+    private UrlGeneratorInterface $urlGenerator;
+
+    public function __construct(UrlGeneratorInterface $urlGenerator)
+    {
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function authenticate(Request $request): Passport
     {
-        $email = $request->request->get('email');
-        $password = $request->request->get('password');
-
-        $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
+        $email = $request->request->get('email', '');
+        $password = $request->request->get('password', '');
 
         return new Passport(
-            new UserBadge($email, function ($userIdentifier) {
-                $user = $this->userProvider->loadUserByIdentifier($userIdentifier);
-                
-                if (!$user instanceof UserInterface) {
-                    throw new CustomUserMessageAuthenticationException('Utilisateur non trouvé.');
-                }
-
-                return $user;
-            }),
+            new UserBadge($email),
             new PasswordCredentials($password),
             [
                 new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
@@ -61,12 +48,26 @@ class AuthentificatorAuthenticator extends AbstractLoginFormAuthenticator
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
-
-        return new RedirectResponse($this->urlGenerator->generate('homeback'));
+    
+        $user = $token->getUser ();
+        error_log('User  roles: ' . implode(', ', $user->getRoles()));
+    
+        if ($user instanceof UserInterface) {
+            if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+                return new RedirectResponse($this->urlGenerator->generate('homeback')); // Admin → Back-Office
+            } elseif (in_array('ROLE_PROFESSIONNEL', $user->getRoles(), true) || in_array('ROLE_AMATEUR', $user->getRoles(), true)) {
+                return new RedirectResponse($this->urlGenerator->generate('home')); // Agriculteurs → Front-Office
+            }
+        }
+    
+        return new RedirectResponse($this->urlGenerator->generate('app_login')); // Par défaut, renvoie au login
     }
+    
+
 
     protected function getLoginUrl(Request $request): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
+
 }

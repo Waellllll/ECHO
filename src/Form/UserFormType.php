@@ -10,6 +10,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints\EqualTo;
 
 
 class UserFormType extends AbstractType
@@ -23,6 +26,7 @@ class UserFormType extends AbstractType
                 'required' => true,
                 'attr' => ['autocomplete' => 'new-password'],
             ])
+            
             ->add('roles', ChoiceType::class, [
                 'choices'  => [
                     'Admin' => 'ROLE_ADMIN',

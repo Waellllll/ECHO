@@ -109,15 +109,16 @@
     </div>
 
     <div class="form-group">
-        <label for="password">Mot de passe:</label>
-        {{ form_widget(form.password, {'attr': {'class': 'form-control', 'id': 'password', 'placeholder': 'Mot de passe'}}) }}
-        {% if form.password.vars.errors|length > 0 %}
-                             <div class="invalid-feedback d-block">
+    <label for="password">Mot de passe:</label>
+    {{ form_widget(form.password, {'attr': {'class': 'form-control', 'id': 'password', 'placeholder': 'Mot de passe'}}) }}
+    {% if form.password.vars.errors|length > 0 %}
+        <div class="invalid-feedback d-block">
+            {{ form_errors(form.password) }}
+        </div>
+    {% endif %}
+</div>
 
-                                    {{ form_errors(form.password) }}
-                            </div>
-                            {% endif %}
-    </div>
+
 
    
 
@@ -129,4 +130,10 @@
 </div>
 
 </body>
+<script>
+
+
+</script>
+
+
 </html>
