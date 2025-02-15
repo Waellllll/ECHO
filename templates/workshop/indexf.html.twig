@@ -1,0 +1,36 @@
+{# templates/workshop/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Workshops{% endblock %}
+
+{% block body %}
+    <h1>Workshops</h1>
+
+    <div class="workshop-list">
+        {% for workshop in workshops %}
+            <div class="workshop">
+                <h2>{{ workshop.title }}</h2>
+                <p>Date: {{ workshop.date|date('Y-m-d') }}</p>
+                 <a href="{{ path('app_workshop_showf', { 'id': workshop.id }) }}" class="details-button">Details</a>
+                
+                <div class="details" id="details-{{ workshop.id }}" style="display: none;">
+                    <p>Duration: {{ workshop.duration }}</p>
+                    <p>Location: {{ workshop.location }}</p>
+                    
+                    <p>Target Audience: {{ workshop.targetAudience }}</p>
+                    <p>Topics Covered: {{ workshop.topicsCovered }}</p>
+                    <p>Materials Provided: {{ workshop.materialsProvided }}</p>
+                    <a href="{{ path('app_reservation_new', { 'workshopId': workshop.id }) }}" class="reservation-button">Reserve Your Spot</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function toggleDetails(id) {
+            const details = document.getElementById('details-' + id);
+            details.style.display = details.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+{% endblock %}

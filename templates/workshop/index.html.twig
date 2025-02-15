@@ -1,0 +1,51 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Workshop index{% endblock %}
+
+{% block body %}
+    <h1>Workshop index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Duration</th>
+                <th>Location</th>
+                <th>Instractor</th>
+                <th>TargetAudience</th>
+                <th>TopicsCovered</th>
+                <th>MaterialsProvided</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for workshop in workshops %}
+            <tr>
+                <td>{{ workshop.id }}</td>
+                <td>{{ workshop.title }}</td>
+                <td>{{ workshop.date ? workshop.date|date('Y-m-d') : '' }}</td>
+                <td>{{ workshop.duration }}</td>
+                <td>{{ workshop.location }}</td>
+                <td>{{ workshop.instractor }}</td>
+                <td>{{ workshop.targetAudience }}</td>
+                <td>{{ workshop.topicsCovered }}</td>
+                <td>{{ workshop.materialsProvided }}</td>
+                <td>
+                    <a href="{{ path('app_workshop_show', {'id': workshop.id}) }}">show</a>
+                    <a href="{{ path('app_workshop_edit', {'id': workshop.id}) }}">edit</a>
+                    
+                </td>
+                
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_workshop_new') }}">Create new</a>
+{% endblock %}

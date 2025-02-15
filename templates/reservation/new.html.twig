@@ -1,0 +1,129 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Reservation{% endblock %}
+
+{% block body %}
+    
+        
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h1 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    form {
+        background-color: #ffffff;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="number"],
+    textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    a {
+        display: inline-block;
+        margin-top: 20px;
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    .error {
+        color: red;
+        font-size: 0.9em;
+    }
+</style>
+
+    <h1>Create New Reservation</h1>
+
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+        <div>
+            {{ form_label(form.participantName) }}
+            {{ form_widget(form.participantName) }}
+            {{ form_errors(form.participantName) }}
+        </div>
+
+        <div>
+            {{ form_label(form.contactEmail) }}
+            {{ form_widget(form.contactEmail) }}
+            {{ form_errors(form.contactEmail) }}
+        </div>
+
+        <div>
+            {{ form_label(form.contactphone) }}
+            {{ form_widget(form.contactphone) }}
+            {{ form_errors(form.contactphone) }}
+        </div>
+
+        <div>
+            {{ form_label(form.reservationDate) }}
+            {{ form_widget(form.reservationDate) }}
+            {{ form_errors(form.reservationDate) }}
+        </div>
+
+        <div>
+            {{ form_label(form.numberOfAttends) }}
+            {{ form_widget(form.numberOfAttends) }}
+            {{ form_errors(form.numberOfAttends) }}
+        </div>
+
+        <div>
+            {{ form_label(form.paymentStatus) }}
+            {{ form_widget(form.paymentStatus) }}
+            {{ form_errors(form.paymentStatus) }}
+        </div>
+
+        <div>
+            {{ form_label(form.workshopTitle) }}
+            {{ form_widget(form.workshopTitle) }}
+            {{ form_errors(form.workshopTitle) }}
+        </div>
+
+        <input type="submit" value="Create Reservation">
+
+    {{ form_end(form) }}
+
+    <a href="{{ path('app_reservation_index') }}">Back to list</a>
+{% endblock %}
