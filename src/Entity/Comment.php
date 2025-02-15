@@ -13,7 +13,9 @@ class Comment
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    // Fix the mapping for the relationship
+    #[ORM\ManyToOne(targetEntity: Article::class, inversedBy: 'comments')]
+    #[ORM\JoinColumn(name: 'id_article', referencedColumnName: 'id')]
     private ?Article $id_article = null;
 
     #[ORM\Column(length: 150, nullable: true)]
@@ -24,22 +26,14 @@ class Comment
         return $this->id;
     }
 
-    public function setId(int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
     public function getIdArticle(): ?Article
     {
         return $this->id_article;
     }
 
-    public function setIdArticle(?Article $id_article): static
+    public function setIdArticle(?Article $id_article): self
     {
         $this->id_article = $id_article;
-
         return $this;
     }
 
@@ -51,7 +45,8 @@ class Comment
     public function setComment(?string $comment): static
     {
         $this->comment = $comment;
-
         return $this;
     }
+    
 }
+

@@ -22,4 +22,18 @@
             </div>
         </div>
     </div>
+     <footer class="bg-dark text-light py-3 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <p class="m-0" style="font-family: {{ base_font_family|default('Arial, sans-serif') }}; font-size: {{ base_font_size|default('14px') }};">
+                        &copy; {{ "now"|date("Y") }} Your Company. All rights reserved.
+                    </p>
+                    <p style="font-family: {{ base_font_family|default('Arial, sans-serif') }}; font-size: {{ base_font_size|default('14px') }};">
+                        <a href="#" class="text-light">Privacy Policy</a> | <a href="#" class="text-light">Terms of Service</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
 {% endblock %}

@@ -17,7 +17,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 // #[Route('front/article')]
 final class ArticleController extends AbstractController
 {
-    #[Route('/front/article',name: 'app_article_index', methods: ['GET'])]
+    #[Route('front/article',name: 'app_article_index', methods: ['GET'])]
     public function index(ArticleRepository $articleRepository, CommentRepository $commentRepository): Response
     {
         // Get all articles
@@ -77,9 +77,9 @@ final class ArticleController extends AbstractController
             return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('front/article/new.html.twig', [
+        return $this->render('front/article/new.html.twig', [
             'article' => $article,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -91,13 +91,32 @@ final class ArticleController extends AbstractController
     //     ]);
     // }
 
-    #[Route('front/{id}/edit', name: 'app_article_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Article $article, EntityManagerInterface $entityManager): Response
+    #[Route('/front/article/{id}/edit', name: 'app_article_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Article $article, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $imageFile = $form->get('imageFile')->getData();
+
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+                try {
+                    $imageFile->move(
+                        $this->getParameter('kernel.project_dir') . '/public/images/front',
+                        $newFilename
+                    );
+                } catch (SQLite3Exception ) {
+                    // Handle file upload error
+                }
+
+                $article->setImage($newFilename);
+            }
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
@@ -105,7 +124,7 @@ final class ArticleController extends AbstractController
 
         return $this->render('front/article/edit.html.twig', [
             'article' => $article,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -119,68 +138,115 @@ final class ArticleController extends AbstractController
 
         return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
     }
-    #[Route('/back/article', name: 'app_article_index_back', methods: ['GET'])]
-    public function indexback(ArticleRepository $articleRepository): Response
-    {
-        return $this->render('back/article/index.html.twig', [
-            'articles' => $articleRepository->findAll(),
-        ]);
+    #[Route('back/article', name: 'app_articleback_index', methods: ['GET'])]
+public function indexback(ArticleRepository $articleRepository, CommentRepository $commentRepository): Response
+{
+    // Get all articles
+    $articles = $articleRepository->findAll();
+
+    // Create an associative array to store comments for each article
+    $articleComments = [];
+
+    // Loop through each article and fetch its associated comments
+    foreach ($articles as $article) {
+        $comments = $commentRepository->findBy(['id_article' => $article->getId()]);
+        $articleComments[$article->getId()] = $comments;
     }
 
-    #[Route('/back/new', name: 'app_article_new_back', methods: ['GET', 'POST'])]
-    public function newback(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $article = new Article();
-        $form = $this->createForm(ArticleType::class, $article);
-        $form->handleRequest($request);
+    // Create a new comment object for the comment form
+    $newComment = new Comment();
+    $commentForm = $this->createForm(CommentType::class, $newComment);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($article);
-            $entityManager->flush();
+    // Render the Twig template with articles, comments, and the comment form
+    return $this->render('back/article/index.html.twig', [
+        'articles' => $articles,
+        'articleComments' => $articleComments,
+        'commentForm' => $commentForm->createView(),
+    ]);
+}
+#[Route('back/article/new', name: 'app_articleback_new', methods: ['GET', 'POST'])]
+public function newback(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+{
+    $article = new Article();
+    $form = $this->createForm(ArticleType::class, $article);
+    $form->handleRequest($request);
 
-            return $this->redirectToRoute('app_article_index_back', [], Response::HTTP_SEE_OTHER);
+    if ($form->isSubmitted() && $form->isValid()) {
+        $imageFile = $form->get('imageFile')->getData();
+
+        if ($imageFile) {
+            $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $safeFilename = $slugger->slug($originalFilename);
+            $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+            try {
+                $imageFile->move(
+                    $this->getParameter('kernel.project_dir') . '/public/images/front',
+                    $newFilename
+                );
+            } catch (SQLite3Exception  ) {
+                printf("error");
+            }
+
+            $article->setImage($newFilename);
         }
 
-        return $this->render('back/article/new.html.twig', [
-            'article' => $article,
-            'form' => $form,
-        ]);
+        $entityManager->persist($article);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_articleback_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/back/{id}', name: 'app_article_show_back', methods: ['GET'])]
-    public function showback(Article $article): Response
-    {
-        return $this->render('back/article/show.html.twig', [
-            'article' => $article,
-        ]);
-    }
+    return $this->renderForm('back/article/new.html.twig', [
+        'article' => $article,
+        'form' => $form,
+    ]);
+}
 
-    #[Route('/back/{id}/edit', name: 'app_article_edit_back', methods: ['GET', 'POST'])]
-    public function editback(Request $request, Article $article, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(ArticleType::class, $article);
-        $form->handleRequest($request);
+#[Route('back/article/{id}/edit', name: 'app_articleback_edit', methods: ['GET', 'POST'])]
+public function editback(Request $request, Article $article, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+{
+    $form = $this->createForm(ArticleType::class, $article);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+    if ($form->isSubmitted() && $form->isValid()) {
+        $imageFile = $form->get('imageFile')->getData();
 
-            return $this->redirectToRoute('app_article_index_back', [], Response::HTTP_SEE_OTHER);
+        if ($imageFile) {
+            $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $safeFilename = $slugger->slug($originalFilename);
+            $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+            try {
+                $imageFile->move(
+                    $this->getParameter('kernel.project_dir') . '/public/images/front',
+                    $newFilename
+                );
+            } catch (SQLite3Exception ) {
+                // Handle file upload error
+            }
+
+            $article->setImage($newFilename);
         }
 
-        return $this->render('back/article/edit.html.twig', [
-            'article' => $article,
-            'form' => $form,
-        ]);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_articleback_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/back/{id}', name: 'app_article_delete_back', methods: ['POST'])]
-    public function deleteback(Request $request, Article $article, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($article);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_article_index_back', [], Response::HTTP_SEE_OTHER);
+    return $this->renderForm('back/article/edit.html.twig', [
+        'article' => $article,
+        'form' => $form,
+    ]);
+}
+#[Route('back/article/{id}', name: 'app_articleback_delete', methods: ['POST'])]
+public function deleteback(Request $request, Article $article, EntityManagerInterface $entityManager): Response
+{
+    if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
+        $entityManager->remove($article);
+        $entityManager->flush();
     }
+
+    return $this->redirectToRoute('app_articleback_index', [], Response::HTTP_SEE_OTHER);
+}
 }
