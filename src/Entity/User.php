@@ -19,7 +19,48 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+    #[ORM\Column(length: 100)]
+#[Assert\NotBlank(message: "Le nom ne peut pas être vide.")]
+#[Assert\Length(
+    min: 2,
+    max: 100,
+    minMessage: "Le nom doit comporter au moins {{ limit }} caractères.",
+    maxMessage: "Le nom ne peut pas dépasser {{ limit }} caractères."
+)]
+private ?string $nom = null;
 
+#[ORM\Column(length: 100)]
+#[Assert\NotBlank(message: "Le prénom ne peut pas être vide.")]
+#[Assert\Length(
+    min: 2,
+    max: 100,
+    minMessage: "Le prénom doit comporter au moins {{ limit }} caractères.",
+    maxMessage: "Le prénom ne peut pas dépasser {{ limit }} caractères."
+)]
+private ?string $prenom = null;
+
+// Getters et Setters
+public function getNom(): ?string
+{
+    return $this->nom;
+}
+
+public function setNom(string $nom): self
+{
+    $this->nom = $nom;
+    return $this;
+}
+
+public function getPrenom(): ?string
+{
+    return $this->prenom;
+}
+
+public function setPrenom(string $prenom): self
+{
+    $this->prenom = $prenom;
+    return $this;
+}
     #[ORM\Column(length: 180)]
     
     #[Assert\NotBlank(message: "L'email ne peut pas être vide.")]
@@ -128,21 +169,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
- #[ORM\Column(type: Types::STRING, length: 20, enumType: UserType::class)]
- #[Assert\NotBlank(message: "choisir un type d utilisateur ")]
-
-private ?UserType $typeUtilisateur = null;
-
-public function getTypeUtilisateur(): ?UserType
-{
-    return $this->typeUtilisateur;
-}
-
-public function setTypeUtilisateur(UserType $typeUtilisateur): self
-{
-    $this->typeUtilisateur = $typeUtilisateur;
-    return $this;
-}
+ 
 
 
 

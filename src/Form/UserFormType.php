@@ -18,42 +18,45 @@ use Symfony\Component\Validator\Constraints\EqualTo;
 class UserFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
+    {   $isProfilePage = $options['is_profile_page'] ?? false;
+
         $builder
+            ->add('nom', null, [
+                'label' => 'Nom',
+                'required' => true,
+                'attr' => ['placeholder' => 'Nom'],
+            ])
+            ->add('prenom', null, [
+                'label' => 'Prénom',
+                'required' => true,
+                'attr' => ['placeholder' => 'Prénom'],
+            ])
             ->add('email', EmailType::class)
             ->add('password', PasswordType::class, [
                 'label' => 'Mot de passe',
                 'required' => true,
                 'attr' => ['autocomplete' => 'new-password'],
-            ])
-            
+            ]);
+        if (!$isProfilePage) {
+            $builder
             ->add('roles', ChoiceType::class, [
                 'choices'  => [
                     'Admin' => 'ROLE_ADMIN',
-                    'Agriculteur Professionnel' => 'ROLE_PROFESSIONNEL',
-                    'Agriculteur Amateur' => 'ROLE_AMATEUR',
+                    ' Professionnel' => 'ROLE_PROFESSIONNEL',
+                    ' Amateur' => 'ROLE_AMATEUR',
                 ],
                 'expanded' => true,
                 'multiple' => true,
-            ])
-            ->add('typeUtilisateur', ChoiceType::class, [
-                'choices'  => array_combine(
-                    array_map(fn(UserType $type) => $type->label(), UserType::cases()),
-                    UserType::cases()
-                ),
-                'choice_value' => fn (?UserType $type) => $type?->value,
-                'expanded' => false,
-                'multiple' => false,
-                'required' => true,
-                'placeholder' => 'Sélectionnez un type d utilisateur',
-            ]); 
-
+            ]);
+            
+        }
     } 
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'is_profile_page' => false,
         ]);
     }
 }

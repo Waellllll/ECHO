@@ -11,6 +11,10 @@
                 <td>{{ user.id }}</td>
             </tr>
             <tr>
+                <th>Nom et Prenom</th>
+                <td>{{ user.nom }} {{ user.prenom }}</td>
+            </tr>
+            <tr>
                 <th>Email</th>
                 <td>{{ user.email }}</td>
             </tr>
@@ -22,10 +26,7 @@
                 <th>Password</th>
                 <td>{{ user.password }}</td>
             </tr>
-            <tr>
-                <th>TypeUtilisateur</th>
-                <td>{{ user.typeUtilisateur.value }}</td>
-            </tr>
+
         </tbody>
     </table>
 

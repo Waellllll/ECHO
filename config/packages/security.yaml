@@ -27,5 +27,8 @@ security:
     access_control:
     - { path: ^/homeback, roles: ROLE_ADMIN }
     - { path: ^/home, roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/user/profile, roles: [ROLE_ADMIN, ROLE_PROFESSIONNEL, ROLE_AMATEUR] }
+    - { path: ^/user/profile, roles: IS_AUTHENTICATED_FULLY }
+
 
         

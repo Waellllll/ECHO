@@ -233,20 +233,7 @@
                         </a>
                         <ul class="sub-nav collapse" id="sidebar-user" data-bs-parent="#sidebar-menu">
                             <li class="nav-item">
-                                <a class="nav-link " href="../dashboard/app/user-profile.html">
-                                    <i class="icon">
-                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
-                                            <g>
-                                            <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
-                                            </g>
-                                        </svg>
-                                    </i>
-                                    <i class="sidenav-mini-icon"> U </i>
-                                    <span class="item-name">User Profile</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link " href="../dashboard/app/user-add.html">
+                                <a class="nav-link " href="{{path('app_user_new')}}">
                                     <i class="icon">
                                         <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
                                             <g>
@@ -259,7 +246,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link " href="../dashboard/app/user-list.html">
+                                <a class="nav-link " href="{{path('app_user_index')}}">
                                     <i class="icon">
                                         <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
                                             <g>
@@ -910,27 +897,30 @@
                     <img src="{{asset('assetsback/images/avatars/avtar_4.png')}}" alt="User-Profile" class="theme-color-green-img img-fluid avatar avatar-50 avatar-rounded">
                     <img src="{{asset('assetsback/images/avatars/avtar_5.png')}}" alt="User-Profile" class="theme-color-yellow-img img-fluid avatar avatar-50 avatar-rounded">
                     <img src="{{asset('assetsback/images/avatars/avtar_3.png')}}" alt="User-Profile" class="theme-color-pink-img img-fluid avatar avatar-50 avatar-rounded">
-                    <div class="caption ms-3 d-none d-md-block ">
-                        <h6 class="mb-0 caption-title">Anaq Robertson</h6>
-                        <p class="mb-0 caption-sub-title"> Administrator</p>
-                    </div>
+                    {% if app.user %}
+                        <div class="caption ms-3 d-none d-md-block">
+                            <h6 class="mb-0 caption-title">{{ app.user.nom }} {{ app.user.prenom }}</h6>
+                            <p class="mb-0 caption-sub-title"> Administrator</p>
+                        </div>
+                    {% else %}
+                        <div class="caption ms-3 d-none d-md-block">
+                            <h6 class="mb-0 caption-title">Guest</h6>
+                            <p class="mb-0 caption-sub-title"> Please log in</p>
+                        </div>
+                    {% endif %}
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="../dashboard/app/user-profile.html">Profile</a></li>
-                    <li><a class="dropdown-item" href="../dashboard/app/user-privacy-setting.html">Privacy Setting</a></li>
+                    <li><a class="dropdown-item" href="">Profile</a></li>
+                    <li><a class="dropdown-item" href="{{ path('home') }}">Aller au Front-Office</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="../dashboard/auth/sign-in.html">Logout</a></li>
+                    <li><a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a></li>
                   </ul>
                 </li>
               </ul>
             </div>
           </div>
         </nav>         
-        {% if is_granted('ROLE_ADMIN') %}
-    <a href="{{ path('home') }}" class="btn btn-primary">Aller au Front-Office</a>
-{% endif %}
 
-<a href="{{ path('app_logout') }}" class="btn btn-danger">Déconnexion</a>
 
          {% block body %}
 
