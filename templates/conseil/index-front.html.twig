@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<main class="main">
+    <div class="container my-5">
+        <h1 class="mb-4">Conseils</h1>
+        <div class="row">
+            {% for conseil in conseils %}
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{conseil.titre}}</h5>
+                            <p class="card-text">{{conseil.contenu}}</p>
+                            <a href="{{ path('app_materiel_front_index', {'id': conseil.id})}}" class="btn btn-primary">
+                                Voire Materiels
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p>Pas de conseils</p>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+{% endblock %}

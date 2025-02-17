@@ -1,14 +1,27 @@
 <?php
 
 namespace App\Entity;
+<<<<<<< HEAD
 
+=======
+use App\Enum\UserType;
+>>>>>>> origin/gestion_utilisateur
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+<<<<<<< HEAD
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+=======
+use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
+
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+>>>>>>> origin/gestion_utilisateur
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -16,8 +29,57 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+<<<<<<< HEAD
 
     #[ORM\Column(length: 180)]
+=======
+    #[ORM\Column(length: 100)]
+#[Assert\NotBlank(message: "Le nom ne peut pas être vide.")]
+#[Assert\Length(
+    min: 2,
+    max: 100,
+    minMessage: "Le nom doit comporter au moins {{ limit }} caractères.",
+    maxMessage: "Le nom ne peut pas dépasser {{ limit }} caractères."
+)]
+private ?string $nom = null;
+
+#[ORM\Column(length: 100)]
+#[Assert\NotBlank(message: "Le prénom ne peut pas être vide.")]
+#[Assert\Length(
+    min: 2,
+    max: 100,
+    minMessage: "Le prénom doit comporter au moins {{ limit }} caractères.",
+    maxMessage: "Le prénom ne peut pas dépasser {{ limit }} caractères."
+)]
+private ?string $prenom = null;
+
+// Getters et Setters
+public function getNom(): ?string
+{
+    return $this->nom;
+}
+
+public function setNom(string $nom): self
+{
+    $this->nom = $nom;
+    return $this;
+}
+
+public function getPrenom(): ?string
+{
+    return $this->prenom;
+}
+
+public function setPrenom(string $prenom): self
+{
+    $this->prenom = $prenom;
+    return $this;
+}
+    #[ORM\Column(length: 180)]
+    
+    #[Assert\NotBlank(message: "L'email ne peut pas être vide.")]
+    #[Assert\Email(message: "L'email n'est pas valide.")]
+>>>>>>> origin/gestion_utilisateur
     private ?string $email = null;
 
     /**
@@ -30,6 +92,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+<<<<<<< HEAD
+=======
+     
+    #[Assert\NotBlank(message: "Le mot de passe ne peut pas être vide.")]
+    #[Assert\Length(
+        min: 8,
+        minMessage: "Votre mot de passe doit comporter au moins {{ limit }} caractères.",
+        max: 255
+    )]
+    #[Assert\Regex(
+        pattern: "/[A-Z]/",
+        message: "Le mot de passe doit contenir au moins une lettre majuscule."
+    )]
+    #[Assert\Regex(
+        pattern: "/[!@#$%^&*(),.?\":{}|<>]/",
+        message: "Le mot de passe doit contenir au moins un caractère spécial."
+    )]
+     
+>>>>>>> origin/gestion_utilisateur
     private ?string $password = null;
 
     public function getId(): ?int
@@ -106,4 +187,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+<<<<<<< HEAD
+=======
+ 
+
+
+
+    
+>>>>>>> origin/gestion_utilisateur
 }

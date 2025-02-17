@@ -9,6 +9,19 @@
 /vendor/
 ###< symfony/framework-bundle ###
 
+<<<<<<< HEAD
+=======
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+>>>>>>> origin/gestion_utilisateur
 ###> symfony/asset-mapper ###
 /public/assets/
 /assets/vendor/

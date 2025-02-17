@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<main class="main">
+    <div class="container my-5">
+        <h1 class="mb-4">{{conseil.titre}}</h1>
+        <p>{{conseil.contenu}}</p>
+
+        <h1 class="mb-4">Matriels</h1>
+        <div class="row">
+            {% for materiel in materiels %}
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        {% if materiel.image %}
+                            <img src="{{ asset('uploads/materiel/' ~ materiel.image)}}" class="card-img-top" alt="{{ materiel.nom }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{materiel.nom}}</h5>
+                            <p class="card-text">
+                                <strong>Type:</strong> {{materiel.type}}<br>
+                                <strong>Marque:</strong> {{materiel.marque}}<br>
+                                <strong>Prix:</strong> {{materiel.prix}}DT<br>
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p>Matriels vide</p>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+{% endblock %}
