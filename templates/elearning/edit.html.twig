@@ -1,0 +1,37 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Edit Elearning{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mb-4 text-center">Edit Elearning</h1>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">Update Elearning</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {{ include('elearning/_form.html.twig', {'button_label': 'Update'}) }}
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="card-title mb-0">Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <a class="btn btn-primary btn-block mb-3" href="{{ path('app_elearning_index') }}">Back to List</a>
+
+                        <h6 class="mt-4 mb-3">Delete Elearning</h6>
+                        {{ include('elearning/_delete_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

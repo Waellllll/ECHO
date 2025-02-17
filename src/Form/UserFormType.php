@@ -18,42 +18,52 @@ use Symfony\Component\Validator\Constraints\EqualTo;
 class UserFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
+    {   $isProfilePage = $options['is_profile_page'] ?? false;
+        $isRegistration = $options['is_registration'] ?? false;
+
         $builder
+            ->add('nom', null, [
+                'label' => 'Nom',
+                'required' => true,
+                'attr' => ['placeholder' => 'Nom'],
+            ])
+            ->add('prenom', null, [
+                'label' => 'Prénom',
+                'required' => true,
+                'attr' => ['placeholder' => 'Prénom'],
+            ])
             ->add('email', EmailType::class)
             ->add('password', PasswordType::class, [
                 'label' => 'Mot de passe',
                 'required' => true,
                 'attr' => ['autocomplete' => 'new-password'],
-            ])
-            
-            ->add('roles', ChoiceType::class, [
-                'choices'  => [
-                    'Admin' => 'ROLE_ADMIN',
-                    'Agriculteur Professionnel' => 'ROLE_PROFESSIONNEL',
-                    'Agriculteur Amateur' => 'ROLE_AMATEUR',
-                ],
-                'expanded' => true,
-                'multiple' => true,
-            ])
-            ->add('typeUtilisateur', ChoiceType::class, [
-                'choices'  => array_combine(
-                    array_map(fn(UserType $type) => $type->label(), UserType::cases()),
-                    UserType::cases()
-                ),
-                'choice_value' => fn (?UserType $type) => $type?->value,
-                'expanded' => false,
-                'multiple' => false,
-                'required' => true,
-                'placeholder' => 'Sélectionnez un type d utilisateur',
-            ]); 
-
+            ]);
+            if (!$isProfilePage) {
+                // Définition des rôles disponibles
+                $rolesChoices = [
+                    'Professionnel' => 'ROLE_PROFESSIONNEL',
+                    'Amateur' => 'ROLE_AMATEUR',
+                ];
+    
+                // Si ce n'est PAS un formulaire d'inscription, on ajoute ROLE_ADMIN
+                if (!$isRegistration) {
+                    $rolesChoices['Admin'] = 'ROLE_ADMIN';
+                }
+    
+                $builder->add('roles', ChoiceType::class, [
+                    'choices'  => $rolesChoices,
+                    'expanded' => true,
+                    'multiple' => true,
+                ]);
+            }
     } 
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'is_profile_page' => false,
+            'is_registration' => false,
         ]);
     }
 }

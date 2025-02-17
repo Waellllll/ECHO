@@ -233,20 +233,7 @@
                         </a>
                         <ul class="sub-nav collapse" id="sidebar-user" data-bs-parent="#sidebar-menu">
                             <li class="nav-item">
-                                <a class="nav-link " href="../dashboard/app/user-profile.html">
-                                    <i class="icon">
-                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
-                                            <g>
-                                            <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
-                                            </g>
-                                        </svg>
-                                    </i>
-                                    <i class="sidenav-mini-icon"> U </i>
-                                    <span class="item-name">User Profile</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link " href="../dashboard/app/user-add.html">
+                                <a class="nav-link " href="{{path('app_user_new')}}">
                                     <i class="icon">
                                         <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
                                             <g>
@@ -259,7 +246,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link " href="../dashboard/app/user-list.html">
+                                <a class="nav-link " href="{{path('app_user_index')}}">
                                     <i class="icon">
                                         <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
                                             <g>
@@ -336,7 +323,7 @@
     </a>
     <ul class="sub-nav collapse" id="sidebar-terrain" data-bs-parent="#sidebar-menu">
         <li class="nav-item">
-            <a class="nav-link " href="../dashboard/app/terrain-list.html">
+            <a class="nav-link " href="{{ path('terrain_list') }}">
                 <i class="icon">
                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
                         <g>
@@ -349,7 +336,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link " href="../dashboard/app/terrain-add.html">
+            <a class="nav-link " href="{{ path('ajouterT') }}">
                 <i class="icon">
                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
                         <g>
@@ -408,51 +395,6 @@
        </li>
 
 
-             
-             <li class="nav-item">
-    <a class="nav-link" data-bs-toggle="collapse" href="#sidebar-workshop" role="button" aria-expanded="false" aria-controls="sidebar-workshop">
-        <i class="icon">
-            <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 8h18M3 12h18M3 16h18M5 4h2M17 4h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <rect x="3" y="6" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
-            </svg>
-        </i>
-        <span class="item-name">Workshop</span>
-        <i class="right-icon">
-            <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-        </i>
-    </a>
-    <ul class="sub-nav collapse" id="sidebar-workshop" data-bs-parent="#sidebar-menu">
-        <li class="nav-item">
-            <a class="nav-link " href="{{ path('app_workshop_index') }}">
-                <i class="icon">
-                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
-                        <g>
-                            <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
-                        </g>
-                    </svg>
-                </i>
-                <i class="sidenav-mini-icon"> L </i>
-                <span class="item-name">Liste des Workshops</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link " href="{{path('app_workshop_new')}}">
-                <i class="icon">
-                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
-                        <g>
-                            <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
-                        </g>
-                    </svg>
-                </i>
-                <i class="sidenav-mini-icon"> A </i>
-                <span class="item-name">Ajouter un Workshop</span>
-            </a>
-        </li>
-    </ul>
-</li>
              <li class="nav-item">
     <a class="nav-link" data-bs-toggle="collapse" href="#sidebar-reservation" role="button" aria-expanded="false" aria-controls="sidebar-reservation">
         <i class="icon">
@@ -483,7 +425,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link " href="{{path('app_reservation_new')}}">
+            <a class="nav-link " href="{{ path('app_reservation_new') }}">
                 <i class="icon">
                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
                         <g>
@@ -955,27 +897,30 @@
                     <img src="{{asset('assetsback/images/avatars/avtar_4.png')}}" alt="User-Profile" class="theme-color-green-img img-fluid avatar avatar-50 avatar-rounded">
                     <img src="{{asset('assetsback/images/avatars/avtar_5.png')}}" alt="User-Profile" class="theme-color-yellow-img img-fluid avatar avatar-50 avatar-rounded">
                     <img src="{{asset('assetsback/images/avatars/avtar_3.png')}}" alt="User-Profile" class="theme-color-pink-img img-fluid avatar avatar-50 avatar-rounded">
-                    <div class="caption ms-3 d-none d-md-block ">
-                        <h6 class="mb-0 caption-title">Anaq Robertson</h6>
-                        <p class="mb-0 caption-sub-title"> Administrator</p>
-                    </div>
+                    {% if app.user %}
+                        <div class="caption ms-3 d-none d-md-block">
+                            <h6 class="mb-0 caption-title">{{ app.user.nom }} {{ app.user.prenom }}</h6>
+                            <p class="mb-0 caption-sub-title"> Administrator</p>
+                        </div>
+                    {% else %}
+                        <div class="caption ms-3 d-none d-md-block">
+                            <h6 class="mb-0 caption-title">Guest</h6>
+                            <p class="mb-0 caption-sub-title"> Please log in</p>
+                        </div>
+                    {% endif %}
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="../dashboard/app/user-profile.html">Profile</a></li>
-                    <li><a class="dropdown-item" href="../dashboard/app/user-privacy-setting.html">Privacy Setting</a></li>
+                    <li><a class="dropdown-item" href="">Profile</a></li>
+                    <li><a class="dropdown-item" href="{{ path('home') }}">Aller au Front-Office</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="../dashboard/auth/sign-in.html">Logout</a></li>
+                    <li><a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a></li>
                   </ul>
                 </li>
               </ul>
             </div>
           </div>
         </nav>         
-        {% if is_granted('ROLE_ADMIN') %}
-    <a href="{{ path('home') }}" class="btn btn-primary">Aller au Front-Office</a>
-{% endif %}
 
-<a href="{{ path('app_logout') }}" class="btn btn-danger">Déconnexion</a>
 
          {% block body %}
 

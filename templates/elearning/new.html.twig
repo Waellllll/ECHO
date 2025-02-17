@@ -1,0 +1,87 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}New Elearning{% endblock %}
+
+{% block body %}
+    <div class="form-container">
+        <h1 class="form-title">Create new Elearning</h1>
+
+        <div class="form-content">
+            {{ include('elearning/_form.html.twig') }}
+        </div>
+
+        <a href="{{ path('app_elearning_index') }}" class="back-link">Back to list</a>
+    </div>
+
+<style>
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.form-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-content {
+    width: 100%;
+}
+
+.form-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+.form-content input,
+.form-content textarea,
+.form-content select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+button.btn {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button.btn:hover {
+    background-color: #0056b3;
+}
+
+.back-link {
+    margin-top: 15px;
+    display: inline-block;
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+</style>
+{% endblock %}

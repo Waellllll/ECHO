@@ -1,0 +1,202 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Mon Profil</h1>
+
+    <div class="row justify-content-center">
+        {% if app.user %}
+        <div class="col-lg-6 col-md-8 col-sm-12">
+            <div class="card profile-card shadow-lg">
+                <div class="card-body">
+                    <h5 class="card-title text-center profile-header">Informations Personnelles</h5>
+                    <div class="profile-info">
+                        <p><strong>Nom :</strong> {{ app.user.nom }}</p>
+                        <p><strong>Prénom :</strong> {{ app.user.prenom }}</p>
+                        <p><strong>Email :</strong> {{ app.user.email }}</p>
+                    </div>
+
+                    <hr class="profile-divider">
+                    <h6 class="text-center profile-update-header">Mettre à jour votre profil</h6>
+
+                    <!-- Formulaire pour mettre à jour l'utilisateur -->
+                    <form method="post" class="profile-form">
+                        <div class="form-group">
+                            <label for="nom" class="form-label">Nom:</label>
+                         {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+                            {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'id': 'nom', 'placeholder': 'Nom'}}) }}
+                            {% if form.nom.vars.errors|length > 0 %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form_errors(form.nom) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                          
+                        <div class="form-group">
+                            <label for="prenom" class="form-label">Prénom:</label>
+                            {{ form_widget(form.prenom, {'attr': {'class': 'form-control', 'id': 'prenom', 'placeholder': 'Prénom'}}) }}
+                            {% if form.prenom.vars.errors|length > 0 %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form_errors(form.prenom) }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email:</label>
+                            {{ form_widget(form.email, {'attr': {'class': 'form-control', 'id': 'email', 'placeholder': 'Email'}}) }}
+                            {% if form.email.vars.errors|length > 0 %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form_errors(form.email) }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Affichage du champ mot de passe -->
+                        <div class="form-group">
+                            <label for="password" class="form-label">Mot de passe:</label>
+                            {{ form_widget(form.password, {'attr': {'class': 'form-control', 'id': 'password', 'placeholder': 'Nouveau mot de passe'}}) }}
+                            {% if form.password.vars.errors|length > 0 %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form_errors(form.password) }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary profile-submit-btn">Mettre à jour</button>
+                        </div>
+                        {{ form_end(form) }}
+                    </form>
+
+                    <!-- Formulaire pour supprimer le compte -->
+                    <div class="text-center mt-4">
+                        <hr class="profile-divider">
+                        <form method="post" action="{{ path('app_user_delete_self', {'id': app.user.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer votre compte ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete_account') }}">
+                            <button type="submit" class="btn btn-danger profile-delete-btn">Supprimer mon compte</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% else %}
+        <div class="text-center">
+            <p>Utilisateur non connecté</p>
+            <a href="{{ path('app_login') }}" class="btn btn-secondary">Se connecter</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* Fond de la carte et ombres */
+        .profile-card {
+            background: #f9f9f9;
+            border-radius: 15px;
+            padding: 30px;
+        }
+
+        /* Titre principal */
+        .profile-header {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Section des informations de l'utilisateur */
+        .profile-info p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        /* Style de séparation entre les sections */
+        .profile-divider {
+            border: 0;
+            border-top: 2px solid #ddd;
+            margin: 20px 0;
+        }
+
+        /* Titre pour la section de mise à jour */
+        .profile-update-header {
+            font-size: 20px;
+            color: #007bff;
+            font-weight: 600;
+        }
+
+        /* Champs du formulaire */
+        .profile-form .form-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .profile-form .form-control {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            font-size: 16px;
+            padding: 15px 20px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        /* Effet de survol et focus sur les champs */
+        .profile-form .form-control:focus {
+            background-color: #fff;
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+        }
+
+        /* Labels flottants (effet animé) */
+        .profile-form .form-label {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 16px;
+            color: #aaa;
+            transition: all 0.3s ease;
+        }
+
+        /* Effet lorsque l'utilisateur clique dans le champ */
+        .profile-form .form-control:focus ~ .form-label,
+        .profile-form .form-control:not(:placeholder-shown) ~ .form-label {
+            top: -10px;
+            left: 20px;
+            font-size: 14px;
+            color: #007bff;
+        }
+
+        /* Boutons personnalisés */
+        .profile-submit-btn {
+            background-color: #28a745;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 25px;
+            transition: background-color 0.3s ease;
+        }
+
+        .profile-submit-btn:hover {
+            background-color: #218838;
+        }
+
+        .profile-delete-btn {
+            background-color: #dc3545;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 25px;
+            transition: background-color 0.3s ease;
+        }
+
+        .profile-delete-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+{% endblock %}

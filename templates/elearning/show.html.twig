@@ -1,0 +1,54 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Elearning{% endblock %}
+
+{% block body %}
+    <h1>Elearning</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ elearning.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ elearning.title }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ elearning.description }}</td>
+            </tr>
+            <tr>
+                <th>Content_type</th>
+                <td>{{ elearning.contentType.value }}</td>
+            </tr>
+            <tr>
+                <th>Content_url</th>
+                <td>{{ elearning.contentUrl }}</td>
+            </tr>
+            <tr>
+                <th>Duration</th>
+                <td>{{ elearning.duration }}</td>
+            </tr>
+            <tr>
+                <th>Difficulty_level</th>
+                <td>{{ elearning.difficultyLevel }}</td>
+            </tr>
+            <tr>
+                <th>Created_at</th>
+                <td>{{ elearning.createdAt ? elearning.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Updated_at</th>
+                <td>{{ elearning.updatedAt ? elearning.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_elearning_index') }}">back to list</a>
+
+    <a href="{{ path('app_elearning_edit', {'id': elearning.id}) }}">edit</a>
+
+    {{ include('elearning/_delete_form.html.twig') }}
+{% endblock %}

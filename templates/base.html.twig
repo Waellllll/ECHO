@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
- 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Accueil{% endblock %}</title>
@@ -28,7 +27,7 @@
 </head>
 
 <body class="index-page">
-  {% block head%}
+
   <header id="header" class="header d-flex align-items-center position-relative">
     <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
@@ -43,34 +42,38 @@
           <li><a href="services.html">Our Services</a></li>
           <li><a href="testimonials.html">materials</a></li>
            <li><a href="testimonials.html">Events</a></li>
-           <li><a href="testimonials.html">Terrains</a></li>
+           <li><a href="{{ path('terrain_list') }}">Terrains</a></li>
+          <li><a href="{{ path('app_workshop_indexf') }}">Workshop</a></li>
           <li><a href="testimonials.html">E-Learning</a></li>
-          <li><a href="{{path('app_workshop_indexf')}}">Workshop </a></li> 
-           
           <li><a href="blog.html">Blog</a></li>
           <li class="dropdown">
             <a href="#"><span> Login </span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li><a href="#">Sign in </a></li>
-              <li class="dropdown">
-                
-                
-             
-              <li><a href="#">Sign-up</a></li>
-              <li><a href="#">Log Out</a></li>
-              
-            </ul>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    {% if app.user %}
+                <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_user_profile', {'id': app.user.id}) }}">
+                        Profil
+                        </a>
+                    </li>
+                {% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li><a class="dropdown-item" href="{{ path('homeback') }}">Aller au back-Office</a></li>
+                    {% endif %}
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a></li>
+                  </ul>
           </li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
     </div>
-    {% endblock %}
   </header>
-
+   
   <main class="main">
-  {% block body %}
+     {% block body %}
+
+
     <!-- Hero Section -->
     <section id="hero" class="hero section dark-background">
       <div id="hero-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
@@ -499,6 +502,7 @@
                     </a>
                   </div>
                   <img src="asset{{('assets/img/img_sq_6.jpg')}}" alt="Image" class="img-fluid">
+                  
                 </div>
               </div>
               <div class="swiper-slide">
@@ -729,11 +733,11 @@
         </div>
       </div>
     </section><!-- /Call To Action Section -->
-  {% endblock %}
+
   </main>
 
   <footer id="footer" class="footer dark-background">
-  {% block footer %}
+
     <div class="footer-top">
       <div class="container">
         <div class="row gy-4">
@@ -822,7 +826,7 @@
 
       </div>
     </div>
-  {% endblock %}
+
   </footer>
 
   <!-- Scroll Top -->
@@ -831,7 +835,8 @@
   <!-- Preloader -->
   <div id="preloader"></div>
   
-     
+     {% endblock  %}
+
      {%  block js %}
 
 

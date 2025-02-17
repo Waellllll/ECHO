@@ -1,0 +1,50 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Elearning index{% endblock %}
+
+{% block body %}
+
+    <h1>Elearning index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Content_type</th>
+                <th>Content_url</th>
+                <th>Duration</th>
+                <th>Difficulty_level</th>
+                <th>Created_at</th>
+                <th>Updated_at</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for elearning in elearnings %}
+            <tr>
+                <td>{{ elearning.id }}</td>
+                <td>{{ elearning.title }}</td>
+                <td>{{ elearning.description }}</td>
+                <td>{{ elearning.contentType.value }}</td>
+                <td>{{ elearning.contentUrl }}</td>
+                <td>{{ elearning.duration }}</td>
+                <td>{{ elearning.difficultyLevel }}</td>
+                <td>{{ elearning.createdAt ? elearning.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ elearning.updatedAt ? elearning.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_elearning_show', {'id': elearning.id}) }}">show</a>
+                    <a href="{{ path('app_elearning_edit', {'id': elearning.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_elearning_new') }}">Create new</a>
+{% endblock %}
