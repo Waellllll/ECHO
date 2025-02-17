@@ -23,6 +23,11 @@ security:
             logout:
                 path: app_logout  # Route de déconnexion
                 target: app_login  # Redirection après déconnexion
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800  # 7 jours
+                path: /
+                always_remember_me: false 
 
     access_control:
     - { path: ^/homeback, roles: ROLE_ADMIN }

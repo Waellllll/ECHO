@@ -118,21 +118,9 @@
         {% endif %}
     </div>
 
-    <div class="form-group">
-        <label for="roles" class="form-label">niveau d'agriculteur :</label>
-        <div class="form-check">
-            {% for choice in form.roles.vars.choices %}
-                {% if choice.value != 'ROLE_ADMIN' %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="{{ choice.value }}" id="{{ choice.value }}" name="{{ form.roles.vars.full_name }}[]"
-                        {% if choice.value in form.roles.vars.value %} checked {% endif %}>
-                        <label class="form-check-label" for="{{ choice.value }}">
-                            {{ choice.label }}
-                        </label>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
+<div class="form-group">
+        <label for="roles">Roles:</label>
+        {{ form_widget(form.roles, {'attr': {'class': 'form-control', 'id': 'roles'}}) }}
     </div>
 
     <div class="form-group">

@@ -17,8 +17,9 @@ class RegisterController extends AbstractController
     public function register(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
-        $form = $this->createForm(UserFormType::class, $user);
-        $form->handleRequest($request);
+        $form = $this->createForm(UserFormType::class, $user, [
+            'is_registration' => true, // On signale que c'est une inscription
+        ]);        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $hashedPassword = $passwordHasher->hashPassword($user, $form->get('password')->getData());

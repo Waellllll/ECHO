@@ -155,12 +155,12 @@
 <form method="post">
     <div class="form-group">
         <label for="inputEmail">Adresse Email</label>
-        <input type="email" name="email" id="inputEmail" class="form-control" required autofocus autocomplete="off" value="{{ last_username }}">
+        <input type="email" name="email" id="inputEmail" class="form-control" required autofocus autocomplete="off" value="{{ last_username }}" placeholder="Entrez l' adresse email">
     </div>
 
     <div class="form-group">
         <label for="inputPassword">Mot de passe</label>
-        <input type="password" name="password" id="inputPassword" class="form-control" required autocomplete="new-password" value="">
+        <input type="password" name="password" id="inputPassword" class="form-control" required autocomplete="new-password" value="" placeholder="Entrez le mot de passe ">
     </div>
 
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
