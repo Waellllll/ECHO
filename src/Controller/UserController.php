@@ -142,6 +142,35 @@ final class UserController extends AbstractController
 
         return $this->redirectToRoute('app_user_profile', ['id' => $user->getId()]);
     }
+    
+    #[Route('/dashboard', name: 'dashboard', methods: ['GET'])]
+    public function dashboard(UserRepository $userRepository): Response
+    {
+        // Récupérer tous les utilisateurs
+        $users = $userRepository->findAll();
+    
+        // Initialiser les compteurs
+        $professionnelsCount = 0;
+        $amateursCount = 0;
+    
+        // Compter les utilisateurs par rôle
+        foreach ($users as $user) {
+            if (in_array('ROLE_PROFESSIONNEL', $user->getRoles())) {
+                $professionnelsCount++;
+            }
+            if (in_array('ROLE_AMATEUR', $user->getRoles())) {
+                $amateursCount++;
+            }
+        }
+       
+        // Passer les données au fichier .twig
+        return $this->render('dashboard/index.html.twig', [
+            'professionnelsCount' => $professionnelsCount,
+            'amateursCount' => $amateursCount,
+        ]);
+    }
+    
+
 
 
 }
