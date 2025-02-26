@@ -34,7 +34,7 @@ class RegisterController extends AbstractController
             $entityManager->flush();
 
             // 📩 Envoi de l'email de confirmation
-            $email = (new Email())
+           $email = (new Email())
                  ->from(new Address('najaranas1011@gmail.com'))                
                  ->to($user->getEmail()) // Email saisi lors de l'inscription
                  ->subject('Bienvenue sur GreenBridge ! 🎉')
