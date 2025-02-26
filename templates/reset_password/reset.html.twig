@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion | GreenBridge</title>
+    <title>Réinitialiser votre mot de passe | GreenBridge</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
@@ -98,20 +98,6 @@
             transform: translateY(-2px);
         }
 
-        .register-link {
-            display: block;
-            margin-top: 20px;
-            color: #4CAF50;
-            font-weight: 500;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .register-link:hover {
-            color: #2E7D32;
-            text-decoration: underline;
-        }
-
         .alert {
             font-size: 0.9rem;
             color: #D32F2F;
@@ -122,68 +108,25 @@
             animation: fadeIn 0.5s ease;
         }
 
-        .leaf-icon {
-            font-size: 3rem;
-            color: #4CAF50;
-            margin-bottom: 15px;
-            animation: leafFloat 3s infinite ease-in-out;
-        }
-
-        @keyframes leafFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
     </style>
 </head>
 <body>
 
 <div class="login-container">
-    <div class="leaf-icon">🌿</div>
-    <h1>Bienvenue sur GreenBridge</h1>
+    <h1>Réinitialiser votre mot de passe</h1>
 
-    {% if error %}
-        <div class="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+    {% for flash_error in app.flashes('reset_password_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            Vous êtes connecté en tant que {{ app.user.userIdentifier }},
-            <a href="{{ path('app_logout') }}" class="register-link">Déconnexion</a>
+    {{ form_start(resetForm) }}
+        <div class="form-group">
+            <label for="inputPassword">Nouveau mot de passe</label>
+            {{ form_row(resetForm.plainPassword, { 'attr': { 'class': 'form-control', 'id': 'inputPassword' } }) }}
         </div>
-    {% endif %}
-
-<form method="post">
-    <div class="form-group">
-        <label for="inputEmail">Adresse Email</label>
-        <input type="email" name="email" id="inputEmail" class="form-control" required autofocus autocomplete="off" value="{{ last_username }}" placeholder="Entrez l' adresse email">
-    </div>
-
-    <div class="form-group">
-        <label for="inputPassword">Mot de passe</label>
-        <input type="password" name="password" id="inputPassword" class="form-control" required autocomplete="new-password" value="" placeholder="Entrez le mot de passe ">
-    </div>
-
-    <!-- 🔹 Ajout du lien "Mot de passe oublié ?" -->
-    <div style="text-align: right; margin-bottom: 15px;">
-        <a href="{{ path('app_forgot_password_request') }}" class="register-link">Mot de passe oublié ?</a>
-    </div>
-
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-    <div class="form-group">
-        <label>
-            <input type="checkbox" name="_remember_me"> Se souvenir de moi
-        </label>
-    </div>
-
-    <button class="btn-primary" type="submit">
-        Se connecter
-    </button>
-</form>
-
-<a href="{{ path('app_register') }}" class="btn-primary" style="display: block; text-align: center; margin-top: 15px;">
-    S'inscrire
-</a>
+        
+        <button class="btn-primary" type="submit">Réinitialiser le mot de passe</button>
+    {{ form_end(resetForm) }}
 </div>
 
 </body>
