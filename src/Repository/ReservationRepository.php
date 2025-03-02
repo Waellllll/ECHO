@@ -15,6 +15,24 @@ class ReservationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Reservation::class);
     }
+    public function getReservationsPerWorkshop(): array
+    {
+        return $this->createQueryBuilder('r')
+            ->select('w.title as workshopTitle, COUNT(r.id) as reservationCount')
+            ->leftJoin('r.workshopTitle', 'w') // Ensure 'workshopTitle' is the correct property name
+            ->groupBy('w.title')
+            ->getQuery()
+            ->getResult();
+    }
+    public function getReservationsByPaymentStatus(): array
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r.paymentStatus as status, COUNT(r.id) as count')
+            ->groupBy('r.paymentStatus')
+            ->getQuery()
+            ->getResult();
+    }
+
 
     //    /**
     //     * @return Reservation[] Returns an array of Reservation objects

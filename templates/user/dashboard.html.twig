@@ -1,0 +1,159 @@
+{# templates/reservation/stats.html.twig #}
+{% extends 'baseback.html.twig' %}
+
+{% block body %}
+    <h1 class="page-title">Dashboard</h1>
+
+    <div class="chart-container">
+        <!-- Chart 1: User Distribution -->
+        <div class="chart-card">
+            <h3 class="chart-title">Répartition des Utilisateurs</h3>
+            <div id="userDistributionChart" class="chart" style="width: 100%; height: 400px;"></div>
+        </div>
+
+        <!-- Chart 2: Reservations per Workshop -->
+        <div class="chart-card">
+            <h3 class="chart-title">Reservations per Workshop</h3>
+            <div id="workshopChart" class="chart" style="width: 100%; height: 400px;"></div>
+        </div>
+
+        <!-- Chart 3: Reservations by Payment Status -->
+        <div class="chart-card">
+            <h3 class="chart-title">Reservations by Payment Status</h3>
+            <div id="paymentChart" class="chart" style="width: 100%; height: 400px;"></div>
+        </div>
+    </div>
+
+    <!-- Load Google Charts -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        // Load Google Charts
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawCharts);
+
+        function drawCharts() {
+            // Chart 1: User Distribution
+            var userData = google.visualization.arrayToDataTable({{ chartData|json_encode|raw }});
+            var userOptions = {
+                title: 'Répartition des Utilisateurs',
+                width: '100%',
+                height: 400,
+                legend: { position: 'bottom', textStyle: { color: '#333', fontSize: 14 } },
+                slices: {
+                    0: { offset: 0.1, textStyle: { fontSize: 16, color: '#fff' }},
+                    1: { offset: 0.1, textStyle: { fontSize: 16, color: '#fff' }},
+                },
+                animation: {
+                    startup: true,
+                    duration: 1200,
+                    easing: 'out'
+                },
+                pieSliceText: 'percentage',
+                pieSliceTextStyle: { color: '#fff', fontSize: 16 },
+            };
+            var userChart = new google.visualization.PieChart(document.getElementById('userDistributionChart'));
+            userChart.draw(userData, userOptions);
+
+            // Chart 2: Reservations per Workshop
+            var workshopData = google.visualization.arrayToDataTable([
+                ['Workshop', 'Reservations'],
+                {% for item in reservationsPerWorkshop %}
+                    ['{{ item.workshopTitle }}', {{ item.reservationCount }}],
+                {% endfor %}
+            ]);
+            var workshopOptions = {
+                title: 'Reservations per Workshop',
+                pieHole: 0.4,
+                animation: { duration: 1000, easing: 'out' },
+                pieSliceText: 'value',
+                legend: { position: 'labeled', textStyle: { color: '#333', fontSize: 14 } },
+                chartArea: { width: '90%', height: '80%' },
+            };
+            var workshopChart = new google.visualization.PieChart(document.getElementById('workshopChart'));
+            workshopChart.draw(workshopData, workshopOptions);
+
+            // Chart 3: Reservations by Payment Status
+            var paymentData = google.visualization.arrayToDataTable([
+                ['Status', 'Count'],
+                {% for item in reservationsByPaymentStatus %}
+                    ['{{ item.status }}', {{ item.count }}],
+                {% endfor %}
+            ]);
+            var paymentOptions = {
+                title: 'Reservations by Payment Status',
+                is3D: true,
+                animation: { duration: 1000, easing: 'out' },
+                pieSliceText: 'value',
+                legend: { position: 'labeled', textStyle: { color: '#333', fontSize: 14 } },
+                chartArea: { width: '90%', height: '80%' },
+            };
+            var paymentChart = new google.visualization.PieChart(document.getElementById('paymentChart'));
+            paymentChart.draw(paymentData, paymentOptions);
+
+            // Resize charts on window resize
+            window.addEventListener('resize', function() {
+                userChart.draw(userData, userOptions);
+                workshopChart.draw(workshopData, workshopOptions);
+                paymentChart.draw(paymentData, paymentOptions);
+            });
+        }
+    </script>
+
+    <style>
+        /* General Page Styles */
+        .page-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Chart Card */
+        .chart-card {
+            width: 45%;
+            min-width: 300px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .chart-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Chart Title */
+        .chart-title {
+            font-size: 1.5rem;
+            color: #444;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* Chart Styling */
+        .chart {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .chart-card {
+                width: 100%;
+            }
+        }
+    </style>
+{% endblock %}

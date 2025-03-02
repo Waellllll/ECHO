@@ -37,17 +37,15 @@
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="index.html" class="active">Home</a></li>
-          <li><a href="about.html">About Us</a></li>
-          <li><a href="services.html">Our Services</a></li>
-          <li><a href="testimonials.html">materials</a></li>
-           <li><a href="testimonials.html">Events</a></li>
+          <li><a href="{{ path('home') }}" class="active">Home</a></li>
            <li><a href="{{ path('terrain_list') }}">Terrains</a></li>
           <li><a href="{{ path('app_workshop_indexf') }}">Workshop</a></li>
-          <li><a href="testimonials.html">E-Learning</a></li>
-          <li><a href="blog.html">Blog</a></li>
+          <li><a href="{{ path('app_elearning_front') }}">E-Learning</a></li>
+          <li><a href="{{ path('app_article_index') }}">Blog</a></li>
           <li class="dropdown">
-            <a href="#"><span> Login </span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+          {% if app.user %}
+            <a href="#"><span>{{ app.user.nom }} {{ app.user.prenom }}</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+          {% endif %}
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     {% if app.user %}
                 <li class="nav-item">

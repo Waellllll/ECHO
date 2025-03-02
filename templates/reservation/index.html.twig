@@ -9,7 +9,7 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>ParticipantName</th>
+                <th>ParticipantNames</th>
                 <th>ContactEmail</th>
                 <th>Contactphone</th>
                 <th>ReservationDate</th>
@@ -22,7 +22,7 @@
         {% for reservation in reservations %}
             <tr>
                 <td>{{ reservation.id }}</td>
-                <td>{{ reservation.participantName }}</td>
+                <td>{{ reservation.participantName.nom }} {{ reservation.participantName.prenom }}</td>
                 <td>{{ reservation.contactEmail }}</td>
                 <td>{{ reservation.contactphone }}</td>
                 <td>{{ reservation.reservationDate ? reservation.reservationDate|date('Y-m-d') : '' }}</td>
@@ -41,5 +41,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_reservation_new') }}">Create new</a>
+    
 {% endblock %}

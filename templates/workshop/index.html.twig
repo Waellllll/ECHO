@@ -17,6 +17,8 @@
                 <th>TargetAudience</th>
                 <th>TopicsCovered</th>
                 <th>MaterialsProvided</th>
+                <th>Created By</th>
+                <th>Reservations</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -32,20 +34,25 @@
                 <td>{{ workshop.targetAudience }}</td>
                 <td>{{ workshop.topicsCovered }}</td>
                 <td>{{ workshop.materialsProvided }}</td>
+                <td>{{ workshop.creatorName.nom }} {{ workshop.creatorName.prenom }}</td>
+                <td>{{ workshop.reservations|length }}</td>
                 <td>
                     <a href="{{ path('app_workshop_show', {'id': workshop.id}) }}">show</a>
                     <a href="{{ path('app_workshop_edit', {'id': workshop.id}) }}">edit</a>
-                    
                 </td>
-                
             </tr>
         {% else %}
             <tr>
-                <td colspan="10">no records found</td>
+                <td colspan="12">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
     <a href="{{ path('app_workshop_new') }}">Create new</a>
+
+    <!-- Chart Section -->
+    <div style="width: 80%; margin: 0 auto;">
+        {{ render_chart(chart) }}
+    </div>
 {% endblock %}

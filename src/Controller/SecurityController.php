@@ -20,7 +20,7 @@ class SecurityController extends AbstractController
             
             // Redirect based on the user's role
             if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
-                return $this->redirectToRoute('homeback'); // Redirect to Back-Office for admin
+                return $this->redirectToRoute('app_dashboard'); // Redirect to Back-Office for admin
             }
             
             // Redirect to Front-Office for regular users

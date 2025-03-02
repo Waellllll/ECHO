@@ -155,12 +155,17 @@
 <form method="post">
     <div class="form-group">
         <label for="inputEmail">Adresse Email</label>
-        <input type="email" name="email" id="inputEmail" class="form-control" required autofocus autocomplete="off" value="{{ last_username }}">
+        <input type="email" name="email" id="inputEmail" class="form-control" required autofocus autocomplete="off" value="{{ last_username }}" placeholder="Entrez l' adresse email">
     </div>
 
     <div class="form-group">
         <label for="inputPassword">Mot de passe</label>
-        <input type="password" name="password" id="inputPassword" class="form-control" required autocomplete="new-password" value="">
+        <input type="password" name="password" id="inputPassword" class="form-control" required autocomplete="new-password" value="" placeholder="Entrez le mot de passe ">
+    </div>
+
+    <!-- 🔹 Ajout du lien "Mot de passe oublié ?" -->
+    <div style="text-align: right; margin-bottom: 15px;">
+        <a href="{{ path('app_forgot_password_request') }}" class="register-link">Mot de passe oublié ?</a>
     </div>
 
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
@@ -173,12 +178,18 @@
 
     <button class="btn-primary" type="submit">
         Se connecter
-    </button>
+    </button> 
+    
+
+     
+ 
 </form>
+    
 
 <a href="{{ path('app_register') }}" class="btn-primary" style="display: block; text-align: center; margin-top: 15px;">
     S'inscrire
-</a></div>
+</a>
+</div>
 
 </body>
 </html>

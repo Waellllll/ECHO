@@ -1,4 +1,4 @@
-{% extends 'baseback.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}New Workshop{% endblock %}
 
@@ -76,6 +76,11 @@
 
     {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
+    {% if app.user %}
+        <div class="workshop-info">
+            Workshop for: {{ app.user.nom }} {{ app.user.prenom }}
+        </div>
+    {% endif %}
     <div>
         {{ form_label(form.title) }}
         {{ form_widget(form.title) }}
@@ -128,5 +133,5 @@
 
 {{ form_end(form) }}
 
-    <a href="{{ path('app_workshop_index') }}">back to list</a>
+    <a href="{{ path('app_workshop_indexf') }}">back to list</a>
 {% endblock %}

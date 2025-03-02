@@ -1,37 +1,153 @@
-{% extends 'baseback.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Edit Elearning{% endblock %}
 
 {% block body %}
-    <div class="container mt-4">
-        <h1 class="mb-4 text-center">Edit Elearning</h1>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 20px;
+    }
 
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="card-title mb-0">Update Elearning</h5>
-                    </div>
-                    <div class="card-body">
-                        <form method="post">
-                            {{ include('elearning/_form.html.twig', {'button_label': 'Update'}) }}
-                        </form>
-                    </div>
+    h1 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    form {
+        background-color: #ffffff;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    a {
+        display: inline-block;
+        margin-top: 20px;
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    .error {
+        color: red;
+        font-size: 0.9em;
+    }
+</style>
+
+<div class="container mt-4">
+    <h1 class="mb-4 text-center">Edit Elearning</h1>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Update Elearning</h5>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+                        <div>
+                            {{ form_label(form.title) }}
+                            {{ form_widget(form.title) }}
+                            {{ form_errors(form.title) }}
+                        </div>
+
+                        <div>
+                            {{ form_label(form.description) }}
+                            {{ form_widget(form.description) }}
+                            {{ form_errors(form.description) }}
+                        </div>
+
+                        <div>
+                            {{ form_label(form.content_type) }}
+                            {{ form_widget(form.content_type) }}
+                            {{ form_errors(form.content_type) }}
+                        </div>
+
+                        <div>
+                            {{ form_label(form.content_url) }}
+                            {{ form_widget(form.content_url) }}
+                            {{ form_errors(form.content_url) }}
+                        </div>
+
+                        <div>
+                            {{ form_label(form.duration) }}
+                            {{ form_widget(form.duration) }}
+                            {{ form_errors(form.duration) }}
+                        </div>
+
+                        <div>
+                            {{ form_label(form.difficulty_level) }}
+                            {{ form_widget(form.difficulty_level) }}
+                            {{ form_errors(form.difficulty_level) }}
+                        </div>
+
+                        <div>
+                            {{ form_label(form.file_path) }}
+                            {{ form_widget(form.file_path) }}
+                            {{ form_errors(form.file_path) }}
+                        </div>
+
+                        <input type="submit" value="Update Elearning">
+
+                    {{ form_end(form) }}
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-info text-white">
-                        <h5 class="card-title mb-0">Actions</h5>
-                    </div>
-                    <div class="card-body">
-                        <a class="btn btn-primary btn-block mb-3" href="{{ path('app_elearning_index') }}">Back to List</a>
+        </div>
 
-                        <h6 class="mt-4 mb-3">Delete Elearning</h6>
-                        {{ include('elearning/_delete_form.html.twig') }}
-                    </div>
+        <div class="col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">Actions</h5>
+                </div>
+                <div class="card-body">
+                    <a class="btn btn-primary w-100 mb-3" href="{{ path('app_elearning_index') }}">Back to List</a>
+
+                    <h6 class="mt-4 mb-3">Delete Elearning</h6>
+                    {{ include('elearning/_delete_form.html.twig') }}
                 </div>
             </div>
         </div>
     </div>
+</div>
+
 {% endblock %}

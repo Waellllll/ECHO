@@ -121,9 +121,61 @@ body {
     background-color: #c9302c;
 }
 
+/* Style for the name and surname */
+.image-item p.name-surname {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2d6a4f;
+    margin-bottom: 10px;
+}
 
+/* Edit Icon */
+.edit-icon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #5bc0de;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+}
+
+.edit-icon:hover {
+    background-color: #31b0d5;
+}
+/* Intervention Icon */
+.intervention-icon {
+    position: absolute;
+    top: 10px;
+    left: 50px; /* Ajustez la position selon vos besoins */
+    background-color: #ffc107; /* Couleur jaune */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+}
+
+.intervention-icon:hover {
+    background-color: #e0a800; /* Couleur jaune foncé au survol */
+}
 
 </style>
+
 <script>
 function confirmDelete(element) {
   if (confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')) {
@@ -132,21 +184,26 @@ function confirmDelete(element) {
 }
 </script>
 
-
 <h1>Liste des Terrains</h1>
 
-    <div class="image-gallery">
-    
-        {% for imageData in images %} 
-            <div class="image-item">
-             <a class="delete-icon" href="#" data-url="{{ path('delete', {'id': imageData.id}) }}" onclick="confirmDelete(this); return false;">&times;</a>
-                <img src="data:image/jpeg;base64,{{ imageData.img }}" alt="{{ imageData.descr }}" width="200"> 
-                <p>{{ imageData.descr}}</p>
-            </div>
-        {% else %}
-            <p>Aucune image trouvée.</p>
-        {% endfor %}
-    </div>
+<div class="image-gallery">
+    {% for imageData in images %}
+        <div class="image-item">
+               <p class="name-surname">{{ imageData.nom }} {{ imageData.prenom }}</p>
+            {% if imageData.iduser == app.user.id %}
+                <a class="delete-icon" href="#" data-url="{{ path('delete', {'id': imageData.id}) }}" onclick="confirmDelete(this); return false;">&times;</a>
+                <a class="edit-icon" href="{{ path('edit', {'id': imageData.id}) }}">⚙️</a> 
+                 
+            {% endif %}
+             <a class="intervention-icon" href="{{ path('intervention', {'idT': imageData.id, 'userId': imageData.iduser}) }}">👨‍🔧</a>
+ 
+            <img src="data:image/jpeg;base64,{{ imageData.img }}" alt="{{ imageData.descr }}" width="200"> 
+            <p>{{ imageData.descr }} </p> 
+           
+        </div>
+    {% else %}
+        <p>Aucune image trouvée.</p>
+    {% endfor %}
 </div>
 
 {% endblock %}

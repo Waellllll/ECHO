@@ -27,7 +27,7 @@ class TerrainType extends AbstractType
                     ])
                 ],
             ]);
-        ;
+        
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -3,85 +3,130 @@
 {% block title %}New Elearning{% endblock %}
 
 {% block body %}
-    <div class="form-container">
-        <h1 class="form-title">Create new Elearning</h1>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 20px;
+    }
 
-        <div class="form-content">
-            {{ include('elearning/_form.html.twig') }}
+    h1 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    form {
+        background-color: #ffffff;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    a {
+        display: inline-block;
+        margin-top: 20px;
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    .error {
+        color: red;
+        font-size: 0.9em;
+    }
+</style>
+
+<h1>Create New Elearning</h1>
+
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+    {% if app.user %}
+        <div class="workshop-info">
+            E-Learning for: {{ app.user.nom }} {{ app.user.prenom }}
         </div>
-
-        <a href="{{ path('app_elearning_index') }}" class="back-link">Back to list</a>
+    {% endif %}
+    <div>
+        {{ form_label(form.title) }}
+        {{ form_widget(form.title) }}
+        {{ form_errors(form.title) }}
     </div>
 
-<style>
-.form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 30px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
+    <div>
+        {{ form_label(form.description) }}
+        {{ form_widget(form.description) }}
+        {{ form_errors(form.description) }}
+    </div>
 
-.form-title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #333;
-}
+    <div>
+        {{ form_label(form.content_type) }}
+        {{ form_widget(form.content_type) }}
+        {{ form_errors(form.content_type) }}
+    </div>
 
-.form-content {
-    width: 100%;
-}
+    <div>
+        {{ form_label(form.content_url) }}
+        {{ form_widget(form.content_url) }}
+        {{ form_errors(form.content_url) }}
+    </div>
 
-.form-content form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 100%;
-}
+    <div>
+        {{ form_label(form.duration) }}
+        {{ form_widget(form.duration) }}
+        {{ form_errors(form.duration) }}
+    </div>
 
-.form-content input,
-.form-content textarea,
-.form-content select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 16px;
-}
+    <div>
+        {{ form_label(form.difficulty_level) }}
+        {{ form_widget(form.difficulty_level) }}
+        {{ form_errors(form.difficulty_level) }}
+    </div>
 
-button.btn {
-    background-color: #007bff;
-    color: #ffffff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
+    <div>
+        {{ form_label(form.file_path) }}
+        {{ form_widget(form.file_path) }}
+        {{ form_errors(form.file_path) }}
+    </div>
 
-button.btn:hover {
-    background-color: #0056b3;
-}
+    <input type="submit" value="Create Elearning">
 
-.back-link {
-    margin-top: 15px;
-    display: inline-block;
-    text-decoration: none;
-    color: #007bff;
-    font-weight: bold;
-}
+{{ form_end(form) }}
 
-.back-link:hover {
-    text-decoration: underline;
-}
-</style>
+<a href="{{ path('app_elearning_index') }}">Back to list</a>
 {% endblock %}

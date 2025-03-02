@@ -16,6 +16,19 @@ class WorkshopRepository extends ServiceEntityRepository
         parent::__construct($registry, Workshop::class);
     }
 
+    public function findBySearchQuery(?string $search): array
+    {
+        if (empty($search)) {
+            return $this->findAll(); // Return all workshops if no search query is provided
+        }
+
+        return $this->createQueryBuilder('w')
+            ->where('w.title LIKE :search OR w.location LIKE :search')
+            ->setParameter('search', '%' . $search . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Workshop[] Returns an array of Workshop objects
     //     */

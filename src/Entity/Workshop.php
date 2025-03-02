@@ -57,6 +57,10 @@ class Workshop
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'workshopTitle')]
     private Collection $reservations;
 
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]  
+    private ?User $creatorName = null;
+
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
@@ -189,6 +193,18 @@ class Workshop
                 $reservation->setWorkshopTitle(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatorName(): ?User
+    {
+        return $this->creatorName;
+    }
+
+    public function setCreatorName(?User $creatorName): static
+    {
+        $this->creatorName = $creatorName;
 
         return $this;
     }

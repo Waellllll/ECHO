@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Elearning;
-use App\Entity\ContentTypeEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -13,6 +12,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\PositiveOrZero;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class ElearningType extends AbstractType
 {
@@ -30,14 +31,11 @@ class ElearningType extends AbstractType
                 ],
             ])
             ->add('content_type', ChoiceType::class, [
-                'choices' => array_combine(
-                    array_map(fn (ContentTypeEnum $enum) => ucfirst($enum->value), ContentTypeEnum::cases()), // Labels
-                    ContentTypeEnum::cases() // Use the actual Enum cases here
-                ),
-                'choice_value' => fn (?ContentTypeEnum $enum) => $enum?->value, // Ensure value stored is a string
-                'choice_label' => fn (ContentTypeEnum $enum) => ucfirst($enum->value), // Display label
-                'constraints' => [
-                    new NotBlank(['message' => 'Content type cannot be blank.']),
+                'choices' => [
+                    'Pdf' => 'pdf',
+                    'Video' => 'video',
+                    'Image' => 'Image',
+                    'Quiz' => 'Quiz',
                 ],
             ])
             ->add('content_url', TextType::class, [
@@ -50,16 +48,31 @@ class ElearningType extends AbstractType
                     new PositiveOrZero(['message' => 'Duration cannot be negative.']),
                 ],
             ])
-            ->add('difficulty_level', TextType::class, [
-                'constraints' => [
-                    new NotBlank(['message' => 'Difficulty level cannot be blank.']),
+            ->add('difficulty_level', ChoiceType::class, [
+                'choices' => [
+                    'Easy' => 'easy',
+                    'Medium' => 'medium',
+                    'Hard' => 'hard',
                 ],
             ])
-            ->add('created_at', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('updated_at', null, [
-                'widget' => 'single_text',
+            ->add('file_path', FileType::class, [
+                'label' => 'Upload File',
+                'mapped' => false,  
+                'constraints' => [
+                    new File([
+                        'maxSize' => '100M', 
+                        'mimeTypes' => [
+                            'application/pdf',                       // PDF files
+                            'image/png',                             // PNG images
+                            'image/jpeg',                            // JPEG images
+                            'video/mp4',                             // MP4 videos
+                            'application/msword',                   // Word documents (doc)
+                            'text/plain',                            // Text files (txt)
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid file (PDF, PNG, JPEG, MP4, DOC, DOCX, XLS, XLSX, TXT)',
+                    ]),
+                ],
+                'required' => false, // Ensure it's not required
             ]);
     }
 

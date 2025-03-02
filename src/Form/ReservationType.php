@@ -9,41 +9,65 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 class ReservationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $workshop = $options['workshop'];
+
         $builder
-            ->add('participantName')
             ->add('contactEmail')
             ->add('contactphone')
             
             ->add('reservationDate', DateType::class, [
-                'widget' => 'choice', // Use 'choice' to create dropdowns for day, month, and year
-                'years' => range(date('Y'), date('Y') + 10), // Specify the range of years
-                'months' => range(1, 12), // Specify the months (1-12)
-                'days' => range(1, 31), // Specify the days (1-31)
-                'html5' => false, // Set to true if you want to use the HTML5 date input
-                'format' => 'dd MM yyyy', // Specify the format for display
+                'widget' => 'single_text',
+                'data' => new \DateTime('today'),
                 'attr' => [
-                    'class' => 'form-control', // Add any additional attributes you want
+                    'class' => 'form-control',
+                    'placeholder' => 'Select a date',
+                    'autocomplete' => 'off',
                 ],
-                'empty_data' => false,
+                'html5' => true,
             ])
             ->add('numberOfAttends')
-            ->add('paymentStatus')
-            ->add('workshopTitle', EntityType::class, [
+            ->add('paymentStatus', ChoiceType::class, [
+                'choices' => [
+                    'Pending' => 'pending',
+                    'Completed' => 'completed',
+                    'Cancelled' => 'cancelled',
+                ],
+                'expanded' => true,
+                'multiple' => false,
+            ]);
+
+        // Listen to form event to set workshop title
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) use ($workshop) {
+            $reservation = $event->getData();
+            $form = $event->getForm();
+
+            // Ensure the workshop is set before rendering the form
+            if ($workshop) {
+                $reservation->setWorkshopTitle($workshop);
+            }
+
+            $form->add('workshopTitle', EntityType::class, [
                 'class' => Workshop::class,
                 'choice_label' => 'title',
-            ])
-        ;
+                'data' => $workshop,
+                'attr' => ['readonly' => true], // Make the field readonly
+            ]);
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Reservation::class,
+            'workshop' => null, // Default value
         ]);
     }
 }

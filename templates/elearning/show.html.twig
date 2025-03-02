@@ -20,35 +20,51 @@
                 <td>{{ elearning.description }}</td>
             </tr>
             <tr>
-                <th>Content_type</th>
-                <td>{{ elearning.contentType.value }}</td>
+                <th>Content Type</th>
+                <td>{{ elearning.contentType }}</td>
             </tr>
             <tr>
-                <th>Content_url</th>
-                <td>{{ elearning.contentUrl }}</td>
+                <th>Content URL</th>
+                <td><a href="{{ elearning.contentUrl }}" target="_blank">{{ elearning.contentUrl }}</a></td>
             </tr>
             <tr>
                 <th>Duration</th>
                 <td>{{ elearning.duration }}</td>
             </tr>
             <tr>
-                <th>Difficulty_level</th>
+                <th>Difficulty Level</th>
                 <td>{{ elearning.difficultyLevel }}</td>
             </tr>
             <tr>
-                <th>Created_at</th>
+                <th>Created At</th>
                 <td>{{ elearning.createdAt ? elearning.createdAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>Updated_at</th>
+                <th>Updated At</th>
                 <td>{{ elearning.updatedAt ? elearning.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>File</th>
+                <td>s
+                    {% if elearning.filePath %}
+                        {% set fileExt = elearning.filePath|split('.')|last %}
+                        {% if fileExt in ['png', 'jpeg', 'jpg'] %}
+                            <img src="{{ asset('uploads/' ~ elearning.filePath) }}" alt="File" style="max-width: 200px;">
+                        {% elseif fileExt == 'pdf' %}
+                            <a href="{{ asset('uploads/' ~ elearning.filePath) }}" target="_blank">Download PDF</a>
+                        {% else %}
+                            <a href="{{ asset('uploads/' ~ elearning.filePath) }}" target="_blank">Download File</a>
+                        {% endif %}
+                    {% else %}
+                        No file uploaded.
+                    {% endif %}
+                </td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_elearning_index') }}">back to list</a>
-
-    <a href="{{ path('app_elearning_edit', {'id': elearning.id}) }}">edit</a>
+    <a href="{{ path('app_elearning_index') }}">Back to list</a>
+    <a href="{{ path('app_elearning_edit', {'id': elearning.id}) }}">Edit</a>
 
     {{ include('elearning/_delete_form.html.twig') }}
 {% endblock %}

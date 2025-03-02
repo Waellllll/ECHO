@@ -3,59 +3,82 @@
 {% block title %}New Reservation{% endblock %}
 
 {% block body %}
-    
-        
-    <style>
+<style>
     body {
-        font-family: Arial, sans-serif;
-        background-color: #f8f9fa;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(to right, #f8f9fa, #e8ebef);
         margin: 0;
-        padding: 20px;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
     }
 
     h1 {
         color: #333;
         margin-bottom: 20px;
+        text-align: center;
     }
 
     form {
         background-color: #ffffff;
         border: 1px solid #ced4da;
-        border-radius: 5px;
-        padding: 20px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: 80px; /* Adjust this value based on your navbar height */
     }
 
     label {
         font-weight: bold;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
         display: block;
+        color: #555;
     }
 
     input[type="text"],
     input[type="date"],
     input[type="number"],
-    textarea {
+    textarea,
+    select {
         width: 100%;
-        padding: 10px;
+        padding: 12px;
         margin-bottom: 15px;
         border: 1px solid #ced4da;
         border-radius: 4px;
         box-sizing: border-box;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    input[type="number"]:focus,
+    textarea:focus,
+    select:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+        outline: none;
     }
 
     input[type="submit"] {
         background-color: #007bff;
         color: white;
         border: none;
-        padding: 10px 15px;
+        padding: 12px 20px;
         border-radius: 4px;
         cursor: pointer;
         font-size: 16px;
+        transition: background-color 0.3s, transform 0.3s;
+        width: 100%;
     }
 
     input[type="submit"]:hover {
         background-color: #0056b3;
+        transform: scale(1.05);
     }
 
     a {
@@ -63,9 +86,11 @@
         margin-top: 20px;
         color: #007bff;
         text-decoration: none;
+        transition: color 0.3s;
     }
 
     a:hover {
+        color: #0056b3;
         text-decoration: underline;
     }
 
@@ -73,57 +98,80 @@
         color: red;
         font-size: 0.9em;
     }
+
+    .reservation-info {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #666;
+        font-size: 1.1em;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group:last-child {
+        margin-bottom: 0;
+    }
+
+    @media (max-width: 767px) {
+        form {
+            padding: 20px;
+            margin-top: 60px; /* Adjust for smaller screens */
+        }
+
+        input[type="submit"] {
+            width: auto;
+        }
+    }
 </style>
 
-    <h1>Create New Reservation</h1>
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
-    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+<h1>Create New Reservation</h1>
+{% if app.user %}
+    <div class="reservation-info">
+        Reservation for: {{ app.user.nom }} {{ app.user.prenom }}
+    </div>
+{% endif %}
 
-        <div>
-            {{ form_label(form.participantName) }}
-            {{ form_widget(form.participantName) }}
-            {{ form_errors(form.participantName) }}
-        </div>
+<div class="form-group">
+    {{ form_label(form.contactEmail) }}
+    {{ form_widget(form.contactEmail) }}
+    {{ form_errors(form.contactEmail) }}
+</div>
 
-        <div>
-            {{ form_label(form.contactEmail) }}
-            {{ form_widget(form.contactEmail) }}
-            {{ form_errors(form.contactEmail) }}
-        </div>
+<div class="form-group">
+    {{ form_label(form.contactphone) }}
+    {{ form_widget(form.contactphone) }}
+    {{ form_errors(form.contactphone) }}
+</div>
 
-        <div>
-            {{ form_label(form.contactphone) }}
-            {{ form_widget(form.contactphone) }}
-            {{ form_errors(form.contactphone) }}
-        </div>
+<div class="form-group">
+    {{ form_label(form.reservationDate) }}
+    {{ form_widget(form.reservationDate) }}
+    {{ form_errors(form.reservationDate) }}
+</div>
 
-        <div>
-            {{ form_label(form.reservationDate) }}
-            {{ form_widget(form.reservationDate) }}
-            {{ form_errors(form.reservationDate) }}
-        </div>
+<div class="form-group">
+    {{ form_label(form.numberOfAttends) }}
+    {{ form_widget(form.numberOfAttends) }}
+    {{ form_errors(form.numberOfAttends) }}
+</div>
 
-        <div>
-            {{ form_label(form.numberOfAttends) }}
-            {{ form_widget(form.numberOfAttends) }}
-            {{ form_errors(form.numberOfAttends) }}
-        </div>
+<div class="form-group">
+    {{ form_label(form.paymentStatus) }}
+    {{ form_widget(form.paymentStatus) }}
+    {{ form_errors(form.paymentStatus) }}
+</div>
 
-        <div>
-            {{ form_label(form.paymentStatus) }}
-            {{ form_widget(form.paymentStatus) }}
-            {{ form_errors(form.paymentStatus) }}
-        </div>
+<div class="form-group">
+    {{ form_label(form.workshopTitle) }}
+    {{ form_widget(form.workshopTitle) }}
+    {{ form_errors(form.workshopTitle) }}
+</div>
 
-        <div>
-            {{ form_label(form.workshopTitle) }}
-            {{ form_widget(form.workshopTitle) }}
-            {{ form_errors(form.workshopTitle) }}
-        </div>
+<input type="submit" value="Create Reservation">
 
-        <input type="submit" value="Create Reservation">
-
-    {{ form_end(form) }}
-
-    <a href="{{ path('app_reservation_index') }}">Back to list</a>
+{{ form_end(form) }}
 {% endblock %}

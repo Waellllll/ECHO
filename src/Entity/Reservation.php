@@ -15,9 +15,7 @@ class Reservation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Participant name cannot be blank.")]
-    private ?string $participantName = null;
+
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "Contact email cannot be blank.")]
@@ -46,22 +44,14 @@ class Reservation
     #[Assert\NotNull(message: "A workshop must be selected.")]
     private ?Workshop $workshopTitle = null;
 
+    #[ORM\ManyToOne(inversedBy: 'reservations')]
+    private ?User $participantName = null;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getParticipantName(): ?string
-    {
-        return $this->participantName;
-    }
-
-    public function setParticipantName(string $participantName): static
-    {
-        $this->participantName = $participantName;
-
-        return $this;
-    }
 
     public function getContactEmail(): ?string
     {
@@ -131,6 +121,18 @@ class Reservation
     public function setWorkshopTitle(?Workshop $workshopTitle): static
     {
         $this->workshopTitle = $workshopTitle;
+
+        return $this;
+    }
+
+    public function getParticipantName(): ?User
+    {
+        return $this->participantName;
+    }
+
+    public function setParticipantName(?User $participantName): static
+    {
+        $this->participantName = $participantName;
 
         return $this;
     }

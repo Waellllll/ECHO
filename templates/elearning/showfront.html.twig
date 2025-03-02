@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}E-learning Articles{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="text-center">E-learning Articles</h1>
+        
+        <div class="row">
+            {% for elearning in elearnings %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between w-100">
+                                {% if elearning.getUserE() and elearning.getUserE().id == app.user.id %}
+                                    <div>
+                                        <a class="delete-icon" href="#" data-url="{{ path('app_elearning_deletef', {'id': elearning.id}) }}" data-csrf="{{ csrf_token('delete' ~ elearning.id) }}" onclick="confirmDelete(this); return false;" title="Delete">
+                                            &times;
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <h5 class="card-title">{{ elearning.title }}</h5>
+                            <p class="card-text">{{ elearning.description|length > 100 ? elearning.description|slice(0, 100) ~ '...' : elearning.description }}</p>
+                            <p><strong>Content Type:</strong> {{ elearning.contentType }}</p>
+                            <p><strong>Difficulty:</strong> {{ elearning.difficultyLevel|capitalize }}</p>
+                            <p><strong>Duration:</strong> {{ elearning.duration }} mins</p>
+                            
+                            {% if elearning.filePath %}
+                                <p>
+                                    <a href="{{ asset('uploads/' ~ elearning.filePath) }}" target="_blank" class="btn btn-primary">Download File</a>
+                                </p>
+                            {% endif %}
+
+                            <a href="{{ path('app_elearning_showfront', {'id': elearning.id}) }}" class="btn btn-info">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p class="text-center">No e-learning articles available.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        function confirmDelete(element) {
+            if (confirm('Are you sure you want to delete this e-learning article?')) {
+                var url = element.getAttribute('data-url');
+                var csrfToken = element.getAttribute('data-csrf');
+
+                var form = document.createElement('form');
+                form.method = 'post';
+                form.action = url;
+
+                // Add the CSRF token for security
+                var csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = '_token';
+                csrfInput.value = csrfToken;
+                form.appendChild(csrfInput);
+
+                // Add the method override for DELETE
+                var methodInput = document.createElement('input');
+                methodInput.type = 'hidden';
+                methodInput.name = '_method';
+                methodInput.value = 'DELETE';
+                form.appendChild(methodInput);
+
+                // Append the form to the body and submit it
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+    </script>
+{% endblock %}
