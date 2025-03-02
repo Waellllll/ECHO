@@ -8,8 +8,12 @@
       {% block stylesheetsback %}
       <!-- Favicon -->
       <link rel="shortcut icon" href="{{asset('assetsback/images/greenbridge.png.png')}}">
+<<<<<<< HEAD
       <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
 
+=======
+      
+>>>>>>> origin/gestion_utilisateur
       <!-- Library / Plugin Css Build -->
       <link rel="stylesheet" href="{{asset('assetsback/css/core/libs.min.css')}}">
       
@@ -234,6 +238,7 @@
                         </a>
                         <ul class="sub-nav collapse" id="sidebar-user" data-bs-parent="#sidebar-menu">
                             <li class="nav-item">
+<<<<<<< HEAD
                                 <a class="nav-link " href="../dashboard/app/user-profile.html">
                                     <i class="icon">
                                         <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
@@ -248,6 +253,9 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " href="../dashboard/app/user-add.html">
+=======
+                                <a class="nav-link " href="{{path('app_user_new')}}">
+>>>>>>> origin/gestion_utilisateur
                                     <i class="icon">
                                         <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
                                             <g>
@@ -260,7 +268,11 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+<<<<<<< HEAD
                                 <a class="nav-link " href="../dashboard/app/user-list.html">
+=======
+                                <a class="nav-link " href="{{path('app_user_index')}}">
+>>>>>>> origin/gestion_utilisateur
                                     <i class="icon">
                                         <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
                                             <g>
@@ -911,6 +923,7 @@
                     <img src="{{asset('assetsback/images/avatars/avtar_4.png')}}" alt="User-Profile" class="theme-color-green-img img-fluid avatar avatar-50 avatar-rounded">
                     <img src="{{asset('assetsback/images/avatars/avtar_5.png')}}" alt="User-Profile" class="theme-color-yellow-img img-fluid avatar avatar-50 avatar-rounded">
                     <img src="{{asset('assetsback/images/avatars/avtar_3.png')}}" alt="User-Profile" class="theme-color-pink-img img-fluid avatar avatar-50 avatar-rounded">
+<<<<<<< HEAD
                     <div class="caption ms-3 d-none d-md-block ">
                         <h6 class="mb-0 caption-title">Anaq Robertson</h6>
                         <p class="mb-0 caption-sub-title"> Administrator</p>
@@ -921,16 +934,44 @@
                     <li><a class="dropdown-item" href="../dashboard/app/user-privacy-setting.html">Privacy Setting</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="../dashboard/auth/sign-in.html">Logout</a></li>
+=======
+                    {% if app.user %}
+                        <div class="caption ms-3 d-none d-md-block">
+                            <h6 class="mb-0 caption-title">{{ app.user.nom }} {{ app.user.prenom }}</h6>
+                            <p class="mb-0 caption-sub-title"> Administrator</p>
+                        </div>
+                    {% else %}
+                        <div class="caption ms-3 d-none d-md-block">
+                            <h6 class="mb-0 caption-title">Guest</h6>
+                            <p class="mb-0 caption-sub-title"> Please log in</p>
+                        </div>
+                    {% endif %}
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="">Profile</a></li>
+                    <li><a class="dropdown-item" href="{{ path('home') }}">Aller au Front-Office</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a></li>
+>>>>>>> origin/gestion_utilisateur
                   </ul>
                 </li>
               </ul>
             </div>
           </div>
         </nav>         
+<<<<<<< HEAD
          {% block body %}
 
 
 
+=======
+
+
+         {% block body %}
+
+
+        
+>>>>>>> origin/gestion_utilisateur
 
          {% endblock %}
 
@@ -945,7 +986,40 @@
 
 
   {% block js %}
+<<<<<<< HEAD
    
+=======
+    <!-- Library Bundle Script -->
+    <script src="{{asset('assetsback/js/core/libs.min.js')}}"></script>
+    
+    <!-- External Library Bundle Script -->
+    <script src="{{asset('assetsback/js/core/external.min.js')}}"></script>
+    
+    <!-- Widgetchart Script -->
+    <script src="{{asset('assetsback/js/charts/widgetcharts.js')}}"></script>
+    
+    <!-- mapchart Script -->
+    <script src="{{asset('assetsback/js/charts/vectore-chart.j')}}s"></script>
+    <script src="{{asset('assetsback/js/charts/dashboard.js')}}" ></script>
+    
+    <!-- fslightbox Script -->
+    <script src="{{asset('assetsback/js/plugins/fslightbox.js')}}"></script>
+    
+    <!-- Settings Script -->
+    <script src="{{asset('assetsback/js/plugins/setting.js')}}"></script>
+    
+    <!-- Slider-tab Script -->
+    <script src="{{asset('assetsback/js/plugins/slider-tabs.js')}}"></script>
+    
+    <!-- Form Wizard Script -->
+    <script src="{{asset('assetsback/js/plugins/form-wizard.js')}}"></script>
+    
+    <!-- AOS Animation Plugin-->
+    <script src="{{asset('assetsback/vendor/aos/dist/aos.js')}}"></script>
+    
+    <!-- App Script -->
+    <script src="{{asset('assetsback/js/hope-ui.js')}}" defer></script>
+>>>>>>> origin/gestion_utilisateur
     
     {% endblock %}
 

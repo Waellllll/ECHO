@@ -75,11 +75,7 @@ function filterCards(showOnlyFavoris) {
     const favoris = getFavoris();
     document.querySelectorAll('.conseil-card').forEach(card => {
         const conseilId = parseInt(card.getAttribute('data-conseil-id'));
-        if (showOnlyFavoris) {
-            card.style.display = favoris.includes(conseilId) ? '' : 'none';
-        } else {
-            card.style.display = '';
-        }
+        card.style.display = showOnlyFavoris ? (favoris.includes(conseilId) ? '' : 'none') : '';
     });
 }
 

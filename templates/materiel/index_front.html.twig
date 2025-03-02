@@ -4,7 +4,7 @@
     <div class="container my-5">
         <h1 class="mb-4">{{ conseil.titre }}</h1>
         <p>{{ conseil.contenu }}</p>
-<br>
+        <br>
         <div class="row mb-4">
             <div class="col-md-6">
                 <input type="text" id="advancedSearch" class="form-control" placeholder="Search materials...">
@@ -22,7 +22,7 @@
                 <button id="sortButton" class="btn btn-primary">Sort</button>
             </div>
         </div>
-<br>
+        <br>
         <h1 class="mb-4">Matriels</h1>
         <div id="materielContainer" class="row">
             {% for materiel in materiels %}
@@ -38,8 +38,7 @@
                                 <strong>Marque:</strong> {{ materiel.marque }}<br>
                                 <strong>Prix:</strong> {{ materiel.prix }}DT<br>
                             </p>
-                            <img src="{{ asset('uploads/qrcode/materiel_'~materiel.id~'.png')  }}" alt="QR Code for {{ materiel.nom }}" class="img-fluid">
-
+                            <img src="{{ asset('uploads/qrcode/materiel_' ~ materiel.id ~ '.png') }}" alt="QR Code for {{ materiel.nom }}" class="img-fluid">
                         </div>
                     </div>
                 </div>
@@ -49,7 +48,6 @@
         </div>
     </div>
 </main>
-
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const searchInput = document.getElementById('advancedSearch');
@@ -65,7 +63,9 @@ document.addEventListener("DOMContentLoaded", function() {
             const name = card.getAttribute('data-name');
             const price = card.getAttribute('data-price');
             const type = card.getAttribute('data-type');
-            if((name && name.indexOf(query) !== -1) || (price && price.indexOf(query) !== -1) || (type && type.indexOf(query) !== -1)){
+            if ((name && name.indexOf(query) !== -1) ||
+                (price && price.indexOf(query) !== -1) ||
+                (type && type.indexOf(query) !== -1)) {
                 card.style.display = 'block';
                 visibleCount++;
             } else {
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
         const emptyMessage = document.getElementById('emptyMessage');
-        if(emptyMessage) {
+        if (emptyMessage) {
             emptyMessage.style.display = visibleCount === 0 ? 'block' : 'none';
         }
     }
