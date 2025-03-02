@@ -27,23 +27,46 @@ class Materiel
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "le type ne peut pas etre vide.")]
+    #[Assert\Length( 
+       
+        max: 50,
+        maxMessage: "Type ne doit pas dépasser 50 caracters"
+    )]
    
     private ?string $type = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "la description ne peut pas etre vide.")]
+    #[Assert\Length( 
+        min: 3,
+        max: 50,
+        minMessage: "la description doit contenir au moins 3 caractères.",
+        maxMessage: "Description ne doit pas dépasser 50 caracters"
+    )]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "la marque ne peut pas etre vide.")]
+    #[Assert\Length( 
+        
+        max: 50,
+        maxMessage: "La marque ne doit pas dépasser 50 caracters"
+    )]
     private ?string $marque = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 0)]
+    
+    #[Assert\NotBlank(message: "le prix ne peut pas etre vide.")]
     #[Assert\Positive(message: "Le prix doit être un nombre positif")]
     private ?string $prix = null;
 
     #[ORM\Column(length: 255)]
+    
+    #[Assert\NotBlank(message: "la categorie ne peut pas etre vide.")]
     private ?string $categorie = null;
 
     /**

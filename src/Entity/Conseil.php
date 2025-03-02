@@ -30,7 +30,7 @@ class Conseil
     #[Assert\NotBlank(message: "le contenue ne peut pas etre vide.")]
     #[Assert\Length( 
         min: 10,
-        max: 50,
+        max: 255,
         minMessage: "le contenue doit contenir au moins 10 caractères.",
         maxMessage: "contenue ne doit pas dépasser 50 caracters"
     )]

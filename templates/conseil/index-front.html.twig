@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<main class="main">
+    <div class="container my-5">
+        <div class="d-flex justify-content-between mb-4">
+            <h1>Conseils</h1>
+            <div>
+                <button id="show-favoris" class="btn btn-danger me-2">Show Favoris</button>
+                <button id="show-all" class="btn btn-secondary">Show All</button>
+            </div>
+        </div>
+
+        <div class="row" id="conseils-container">
+            {% for conseil in conseils %}
+                <div class="col-md-4 conseil-card" data-conseil-id="{{ conseil.id }}">
+                    <div class="card mb-4 shadow-sm position-relative">
+                        <button 
+                            class="favoris-btn btn position-absolute top-0 end-0 m-2 p-0 border-0 bg-transparent"
+                            data-conseil-id="{{ conseil.id }}">
+                            <i class="fa fa-heart-o fa-2x"></i>
+                        </button>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ conseil.titre }}</h5>
+                            <p class="card-text">{{ conseil.contenu }}</p>
+                            <a href="{{ path('app_materiel_front_index', {'id': conseil.id})}}" class="btn btn-primary">
+                                Voir Materiels
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p>Pas de conseils</p>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+
+<script>
+function getFavoris() {
+    const favoris = localStorage.getItem('favoris');
+    return favoris ? JSON.parse(favoris) : [];
+}
+
+function saveFavoris(favoris) {
+    localStorage.setItem('favoris', JSON.stringify(favoris));
+}
+
+function toggleFavoris(conseilId, button) {
+    let favoris = getFavoris();
+    const index = favoris.indexOf(conseilId);
+
+    if (index === -1) {
+        favoris.push(conseilId);
+        button.innerHTML = '<i class="fa fa-heart fa-2x" style="color: red;"></i>';
+    } else {
+        favoris.splice(index, 1);
+        button.innerHTML = '<i class="fa fa-heart-o fa-2x"></i>';
+    }
+    saveFavoris(favoris);
+}
+
+function updateHeartIcons() {
+    const favoris = getFavoris();
+    document.querySelectorAll('.favoris-btn').forEach(button => {
+        const conseilId = parseInt(button.getAttribute('data-conseil-id'));
+        if (favoris.includes(conseilId)) {
+            button.innerHTML = '<i class="fa fa-heart fa-2x" style="color: red;"></i>';
+        } else {
+            button.innerHTML = '<i class="fa fa-heart-o fa-2x"></i>';
+        }
+    });
+}
+
+function filterCards(showOnlyFavoris) {
+    const favoris = getFavoris();
+    document.querySelectorAll('.conseil-card').forEach(card => {
+        const conseilId = parseInt(card.getAttribute('data-conseil-id'));
+        if (showOnlyFavoris) {
+            card.style.display = favoris.includes(conseilId) ? '' : 'none';
+        } else {
+            card.style.display = '';
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    updateHeartIcons();
+    document.querySelectorAll('.favoris-btn').forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const conseilId = parseInt(this.getAttribute('data-conseil-id'));
+            toggleFavoris(conseilId, this);
+        });
+    });
+    document.getElementById('show-favoris').addEventListener('click', function () {
+        filterCards(true);
+    });
+    document.getElementById('show-all').addEventListener('click', function () {
+        filterCards(false);
+    });
+});
+</script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}

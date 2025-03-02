@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<main class="main">
+    <div class="container my-5">
+        <h1 class="mb-4">{{ conseil.titre }}</h1>
+        <p>{{ conseil.contenu }}</p>
+<br>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <input type="text" id="advancedSearch" class="form-control" placeholder="Search materials...">
+            </div>
+            <div class="col-md-4">
+                <select id="sortSelect" class="form-control">
+                    <option value="default">Default</option>
+                    <option value="name_asc">Name Ascending</option>
+                    <option value="name_desc">Name Descending</option>
+                    <option value="price_asc">Price Low to High</option>
+                    <option value="price_desc">Price High to Low</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button id="sortButton" class="btn btn-primary">Sort</button>
+            </div>
+        </div>
+<br>
+        <h1 class="mb-4">Matriels</h1>
+        <div id="materielContainer" class="row">
+            {% for materiel in materiels %}
+                <div class="col-md-4 materiel-card" data-name="{{ materiel.nom | lower }}" data-price="{{ materiel.prix }}" data-type="{{ materiel.type }}">
+                    <div class="card mb-4 shadow-sm">
+                        {% if materiel.image %}
+                            <img src="{{ asset('uploads/' ~ materiel.image) }}" class="card-img-top" alt="{{ materiel.nom }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ materiel.nom }}</h5>
+                            <p class="card-text">
+                                <strong>Type:</strong> {{ materiel.type }}<br>
+                                <strong>Marque:</strong> {{ materiel.marque }}<br>
+                                <strong>Prix:</strong> {{ materiel.prix }}DT<br>
+                            </p>
+                            <img src="{{ asset('uploads/qrcode/materiel_'~materiel.id~'.png')  }}" alt="QR Code for {{ materiel.nom }}" class="img-fluid">
+
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p id="emptyMessage">Matriels vide</p>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const searchInput = document.getElementById('advancedSearch');
+    const sortSelect = document.getElementById('sortSelect');
+    const sortButton = document.getElementById('sortButton');
+    const materielContainer = document.getElementById('materielContainer');
+    const cards = Array.from(document.querySelectorAll('.materiel-card'));
+
+    function filterCards() {
+        const query = searchInput.value.toLowerCase().trim();
+        let visibleCount = 0;
+        cards.forEach(card => {
+            const name = card.getAttribute('data-name');
+            const price = card.getAttribute('data-price');
+            const type = card.getAttribute('data-type');
+            if((name && name.indexOf(query) !== -1) || (price && price.indexOf(query) !== -1) || (type && type.indexOf(query) !== -1)){
+                card.style.display = 'block';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+        const emptyMessage = document.getElementById('emptyMessage');
+        if(emptyMessage) {
+            emptyMessage.style.display = visibleCount === 0 ? 'block' : 'none';
+        }
+    }
+
+    searchInput.addEventListener('keyup', filterCards);
+
+    function sortCards() {
+        let sortedCards = [...cards];
+        const sortBy = sortSelect.value;
+
+        if (sortBy === 'name_asc') {
+            sortedCards.sort((a, b) => a.getAttribute('data-name').localeCompare(b.getAttribute('data-name')));
+        } else if (sortBy === 'name_desc') {
+            sortedCards.sort((a, b) => b.getAttribute('data-name').localeCompare(a.getAttribute('data-name')));
+        } else if (sortBy === 'price_asc') {
+            sortedCards.sort((a, b) => parseFloat(a.getAttribute('data-price')) - parseFloat(b.getAttribute('data-price')));
+        } else if (sortBy === 'price_desc') {
+            sortedCards.sort((a, b) => parseFloat(b.getAttribute('data-price')) - parseFloat(a.getAttribute('data-price')));
+        } else {
+            sortedCards = [...cards];
+        }
+
+        materielContainer.innerHTML = '';
+        sortedCards.forEach(card => {
+            materielContainer.appendChild(card);
+        });
+    }
+
+    sortButton.addEventListener('click', sortCards);
+});
+</script>
+{% endblock %}

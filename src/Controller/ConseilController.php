@@ -22,6 +22,13 @@ final class ConseilController extends AbstractController
             'conseils' => $conseilRepository->findAll(),
         ]);
     }
+    #[Route('/front',name: 'app_conseil_index_front', methods: ['GET'])]
+    public function index_front(ConseilRepository $conseilRepository): Response
+    {
+        return $this->render('conseil/index-front.html.twig', [
+            'conseils' => $conseilRepository->findAll(),
+        ]);
+    }
 
     #[Route('/new', name: 'app_conseil_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
