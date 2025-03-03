@@ -9,37 +9,41 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>ParticipantNames</th>
-                <th>ContactEmail</th>
-                <th>Contactphone</th>
-                <th>ReservationDate</th>
-                <th>NumberOfAttends</th>
-                <th>PaymentStatus</th>
-                <th>actions</th>
+                <th>Participant Names</th>
+                <th>Contact Email</th>
+                <th>Contact Phone</th>
+                <th>Reservation Date</th>
+                <th>Number Of Attendees</th>
+                <th>Payment Status</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for reservation in reservations %}
             <tr>
                 <td>{{ reservation.id }}</td>
-                <td>{{ reservation.participantName.nom }} {{ reservation.participantName.prenom }}</td>
+                <td>
+                    {% if reservation.participantName %}
+                        {{ reservation.participantName.nom }} {{ reservation.participantName.prenom }}
+                    {% else %}
+                        No participant assigned
+                    {% endif %}
+                </td>
                 <td>{{ reservation.contactEmail }}</td>
                 <td>{{ reservation.contactphone }}</td>
                 <td>{{ reservation.reservationDate ? reservation.reservationDate|date('Y-m-d') : '' }}</td>
                 <td>{{ reservation.numberOfAttends }}</td>
                 <td>{{ reservation.paymentStatus }}</td>
                 <td>
-                    <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}">show</a>
-                    <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">edit</a>
+                    <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}">Show</a>
+                    <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">Edit</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="8">no records found</td>
+                <td colspan="8">No records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    
 {% endblock %}

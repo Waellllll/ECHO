@@ -25,24 +25,36 @@ final class ReservationController extends AbstractController
     }
 
     #[Route('/new/{workshop}', name: 'app_reservation_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, Workshop $workshop): Response
-    {
+    public function new(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        Workshop $workshop,
+        Security $security // Inject the Security service
+    ): Response {
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation, ['workshop' => $workshop]);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
+            // Get the current user
+            $user = $security->getUser();
+    
+            // Set the participantName to the current user
+            $reservation->setParticipantName($user);
+    
+            // Persist and flush the reservation
             $entityManager->persist($reservation);
             $entityManager->flush();
-
+    
             return $this->redirectToRoute('app_reservation_index', [], Response::HTTP_SEE_OTHER);
         }
-
+    
         return $this->render('reservation/new.html.twig', [
             'reservation' => $reservation,
             'form' => $form->createView(),
         ]);
     }
+    
 
 
     #[Route('/{id}', name: 'app_reservation_show', methods: ['GET'])]
