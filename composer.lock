@@ -4,11 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< Updated upstream
-    "content-hash": "72ed139a0dd2a821c21485ff3da35428",
-=======
     "content-hash": "3e17247ec5c90f8ab301ed4dcd83e4d0",
->>>>>>> Stashed changes
     "packages": [
         {
             "name": "api-platform/core",
