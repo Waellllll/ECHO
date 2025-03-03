@@ -20,10 +20,13 @@
                 <td>{{ reclamation.description }}</td>
             </tr>
             <tr>
+<<<<<<< Updated upstream
                 <th>Status</th>
                 <td>{{ reclamation.status }}</td>
             </tr>
             <tr>
+=======
+>>>>>>> Stashed changes
                 <th>Created_at</th>
                 <td>{{ reclamation.createdAt ? reclamation.createdAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
@@ -31,12 +34,31 @@
                 <th>Updated_at</th>
                 <td>{{ reclamation.updatedAt ? reclamation.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
+<<<<<<< Updated upstream
         </tbody>
     </table>
 
     <a href="{{ path('app_reclamation_index') }}">back to list</a>
 
     <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}">edit</a>
+=======
+            <tr>
+                <th>Evidence</th>
+                <td>
+                 {% if reclamation.evidence %}
+                    <a href="{{ asset('uploads/evidence/' ~ reclamation.evidenceFile) }}" target="_blank">View Evidence</a>
+                {% else %}
+                    No file uploaded
+                {% endif %}
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_reclamation_index') }}">Back to list</a>
+    <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}">Edit</a>
+>>>>>>> Stashed changes
 
     {{ include('reclamation/_delete_form.html.twig') }}
 {% endblock %}

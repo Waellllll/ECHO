@@ -3,6 +3,7 @@
 {% block title %}Edit Reclamation{% endblock %}
 
 {% block body %}
+<<<<<<< Updated upstream
     <h1>Edit Reclamation</h1>
 
     {{ include('reclamation/_form.html.twig', {'button_label': 'Update'}) }}
@@ -10,4 +11,141 @@
     <a href="{{ path('app_reclamation_index') }}">back to list</a>
 
     {{ include('reclamation/_delete_form.html.twig') }}
+=======
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #ffffff;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input[type="text"],
+        textarea,
+        select,
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+
+    <div class="container mt-4">
+        <h1 class="mb-4 text-center">Edit Reclamation</h1>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">Update Reclamation</h5>
+                    </div>
+                    <div class="card-body">
+                        {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+
+                        <div>
+                            {{ form_label(form.title) }}
+                            {{ form_widget(form.title) }}
+                            {{ form_errors(form.title) }}
+                        </div>
+
+                        <div>
+                            {{ form_label(form.description) }}
+                            {{ form_widget(form.description) }}
+                            {{ form_errors(form.description) }}
+                        </div>
+
+                        <div>
+                            {{ form_label(form.article) }}
+                            {{ form_widget(form.article) }}
+                            {{ form_errors(form.article) }}
+                        </div>
+
+                        <div>
+                            {{ form_label(form.evidenceFile) }}
+                            {{ form_widget(form.evidenceFile) }}
+                            {{ form_errors(form.evidenceFile) }}
+                        </div>
+
+                        {% if reclamation.evidence %}
+                            <div>
+                                <label>Current Evidence:</label><br>
+                                <a href="{{ asset('uploads/reclamations/' ~ reclamation.evidence) }}" target="_blank">View Current Evidence</a>
+                            </div>
+                        {% endif %}
+
+                        <input type="submit" value="Update">
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="card-title mb-0">Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <a class="btn btn-primary btn-block mb-3" href="{{ path('app_reclamation_index') }}">Back to List</a>
+
+                        <h6 class="mt-4 mb-3">Delete Reclamation</h6>
+                        {{ include('reclamation/_delete_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+>>>>>>> Stashed changes
 {% endblock %}

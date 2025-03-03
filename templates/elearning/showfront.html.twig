@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}E-learning Articles{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="text-center">E-learning Articles</h1>
+
+        <!-- Search and Filter Section -->
+        <div class="mb-4">
+            <input type="text" id="search" class="form-control mb-2" placeholder="Search articles...">
+            <select id="category" class="form-control">
+                <option value="">All Categories</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="row" id="elearning-list">
+            {% for elearning in elearnings %}
+                <div class="col-md-4 mb-4 elearning-item" data-categories="{% for category in elearning.categories %}{{ category.id }} {% endfor %}" data-title="{{ elearning.title|lower }}">
+                    <div class="card shadow-sm">
+                        {% if elearning.filePath %}
+                            {% set fileExt = elearning.filePath|split('.')|last %}
+                            {% if fileExt in ['png', 'jpeg', 'jpg'] %}
+                                <img src="{{ asset('uploads/' ~ elearning.filePath) }}" class="card-img-top" alt="E-learning Image" style="max-height: 200px; object-fit: cover;">
+                            {% endif %}
+                        {% else %}
+                            <img src="{{ asset('images/default-thumbnail.jpg') }}" class="card-img-top" alt="Default Image" style="max-height: 200px; object-fit: cover;">
+                        {% endif %}
+
+                        <div class="card-body">
+                            <h5 class="card-title">{{ elearning.title }}</h5>
+                            <p class="card-text">{{ elearning.description|length > 100 ? elearning.description|slice(0, 100)|trim ~ '...' : elearning.description }}</p>
+                            <p><strong>Content Type:</strong> {{ elearning.contentType }}</p>
+                            <p><strong>Difficulty:</strong> {{ elearning.difficultyLevel|capitalize }}</p>
+                            <p><strong>Category:</strong> 
+                                {% if elearning.categories is not empty %}
+                                    {% for category in elearning.categories %}
+                                        {{ category.name }}{% if not loop.last %}, {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    No Category
+                                {% endif %}
+                            </p>
+                            <p><strong>Duration:</strong> {{ elearning.duration }} mins</p>
+
+                            {% if elearning.filePath %}
+                                <p>
+                                    {% if fileExt == 'pdf' %}
+                                        <a href="{{ asset('uploads/' ~ elearning.filePath) }}" target="_blank" class="btn btn-danger">📄 View PDF</a>
+                                    {% else %}
+                                        <a href="{{ asset('uploads/' ~ elearning.filePath) }}" download class="btn btn-primary">📥 Download File</a>
+                                    {% endif %}
+                                </p>
+                            {% endif %}
+
+                            <a href="{{ path('app_elearning_showfront', {'id': elearning.id}) }}" class="btn btn-info">📖 View Details</a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p class="text-center">No e-learning articles available.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('search').addEventListener('input', filterArticles);
+        document.getElementById('category').addEventListener('change', filterArticles);
+
+        function filterArticles() {
+            let searchQuery = document.getElementById('search').value.toLowerCase();
+            let selectedCategory = document.getElementById('category').value;
+            let articles = document.querySelectorAll('.elearning-item');
+
+            articles.forEach(article => {
+                let title = article.getAttribute('data-title');
+                let categories = article.getAttribute('data-categories').split(' ');
+                
+                let matchesSearch = title.includes(searchQuery);
+                let matchesCategory = selectedCategory === '' || categories.includes(selectedCategory);
+                
+                if (matchesSearch && matchesCategory) {
+                    article.style.display = 'block';
+                } else {
+                    article.style.display = 'none';
+                }
+            });
+        }
+    </script>
+{% endblock %}

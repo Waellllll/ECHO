@@ -1,0 +1,93 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}New Conseil{% endblock %}
+
+{% block body %}
+    <div class="container my-4">
+        <h1>Ajouter un nouveau conseil</h1>
+
+        {# We disable the browser's default validation UI with novalidate,
+           but we let the form submit so that Symfony's server-side validation runs. #}
+        {{ form_start(form, {
+            'attr': {
+                'class': 'row g-3 needs-validation',
+                'novalidate': 'novalidate'
+            }
+        }) }}
+
+        {# Titre Field #}
+        <div class="col-md-6">
+            {{ form_label(form.titre, 'Titre', { 'label_attr': { 'class': 'form-label' } }) }}
+            {{ form_widget(form.titre, {
+                'attr': {
+                    'class': 'form-control' ~ (form.titre.vars.errors|length > 0 ? ' is-invalid' : '')
+                }
+            }) }}
+            {% if form.titre.vars.errors|length > 0 %}
+                <div class="invalid-feedback d-block">
+                    {% for error in form.titre.vars.errors %}
+                        {{ error.message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        {# Contenu Field #}
+        <div class="col-md-6">
+            {{ form_label(form.contenu, 'Contenu', { 'label_attr': { 'class': 'form-label' } }) }}
+            {{ form_widget(form.contenu, {
+                'attr': {
+                    'class': 'form-control' ~ (form.contenu.vars.errors|length > 0 ? ' is-invalid' : '')
+                }
+            }) }}
+            {% if form.contenu.vars.errors|length > 0 %}
+                <div class="invalid-feedback d-block">
+                    {% for error in form.contenu.vars.errors %}
+                        {{ error.message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+       
+
+        
+
+        {# Materiels Field (if your form includes it) #}
+        <div class="col-md-12">
+            {{ form_label(form.materiels, 'Matériels associés', { 'label_attr': { 'class': 'form-label' } }) }}
+            {{ form_widget(form.materiels, {
+                'attr': {
+                    'class': 'form-control' ~ (form.materiels.vars.errors|length > 0 ? ' is-invalid' : '')
+                }
+            }) }}
+            {% if form.materiels.vars.errors|length > 0 %}
+                <div class="invalid-feedback d-block">
+                    {% for error in form.materiels.vars.errors %}
+                        {{ error.message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        {# Submit Button #}
+        <div class="col-12">
+            <button class="btn btn-primary" type="submit">Enregistrer</button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+
+    <a href="{{ path('app_conseil_index') }}">back to list</a>
+
+    {# Minimal script to add the Bootstrap "was-validated" class on submit.
+       It does not block the submission so that Symfony can process the form. #}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const formElement = document.querySelector("form.needs-validation");
+            formElement.addEventListener("submit", function () {
+                formElement.classList.add("was-validated");
+            });
+        });
+    </script>
+{% endblock %}

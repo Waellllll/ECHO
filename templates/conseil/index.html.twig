@@ -1,0 +1,41 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Liste des conseils{% endblock %}
+
+{% block body %}
+    <h1>Liste des conseils</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Contenu</th>
+                <th>DatePublication</th>
+                <th>Note</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for conseil in conseils %}
+            <tr>
+                <td>{{ conseil.id }}</td>
+                <td>{{ conseil.titre }}</td>
+                <td>{{ conseil.contenu }}</td>
+                <td>{{ conseil.datePublication ? conseil.datePublication|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ conseil.note }}</td>
+                <td>
+                    <a href="{{ path('app_conseil_show', {'id': conseil.id}) }}">show</a>
+                    <a href="{{ path('app_conseil_edit', {'id': conseil.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_conseil_new') }}">Create new</a>
+{% endblock %}

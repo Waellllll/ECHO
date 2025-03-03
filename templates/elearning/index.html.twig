@@ -1,5 +1,6 @@
 {% extends 'baseback.html.twig' %}
 
+<<<<<<< Updated upstream
 {% block title %}Elearning index{% endblock %}
 
 {% block body %}
@@ -19,6 +20,29 @@
                 <th>Created_at</th>
                 <th>Updated_at</th>
                 <th>actions</th>
+=======
+{% block title %}Elearning Index{% endblock %}
+
+{% block body %}
+
+    <h1 class="mb-4">Elearning Index</h1>
+
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Categories</th>
+                <th>Content Type</th>
+                <th>Content URL</th>
+                <th>Duration</th>
+                <th>Difficulty Level</th>
+                <th>Created At</th>
+                <th>Updated At</th>
+                <th>File</th>
+                <th>Actions</th>
+>>>>>>> Stashed changes
             </tr>
         </thead>
         <tbody>
@@ -26,6 +50,7 @@
             <tr>
                 <td>{{ elearning.id }}</td>
                 <td>{{ elearning.title }}</td>
+<<<<<<< Updated upstream
                 <td>{{ elearning.description }}</td>
                 <td>{{ elearning.contentType.value }}</td>
                 <td>{{ elearning.contentUrl }}</td>
@@ -36,15 +61,56 @@
                 <td>
                     <a href="{{ path('app_elearning_show', {'id': elearning.id}) }}">show</a>
                     <a href="{{ path('app_elearning_edit', {'id': elearning.id}) }}">edit</a>
+=======
+                <td>{{ elearning.description|slice(0, 50) ~ '...' }}</td> {# Shorten long descriptions #}
+                <td>
+                    {% if elearning.categories is not empty %}
+                        {{ elearning.categories|map(c => c.name)|join(', ') }}
+                    {% else %}
+                        No Category
+                    {% endif %}
+                </td>
+                <td>{{ elearning.contentType }}</td>
+                <td>
+                    {% if elearning.contentUrl %}
+                        <a href="{{ elearning.contentUrl }}" target="_blank" class="btn btn-sm btn-primary">View</a>
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+                <td>{{ elearning.duration }} min</td>
+                <td>{{ elearning.difficultyLevel|capitalize }}</td>
+                <td>{{ elearning.createdAt ? elearning.createdAt|date('Y-m-d H:i:s') : 'N/A' }}</td>
+                <td>{{ elearning.updatedAt ? elearning.updatedAt|date('Y-m-d H:i:s') : 'N/A' }}</td>
+                <td>
+                    {% if elearning.filePath %}
+                        <a href="{{ asset('uploads/' ~ elearning.filePath) }}" download class="btn btn-sm btn-secondary">Download</a>
+                    {% else %}
+                        No file
+                    {% endif %}
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-info" href="{{ path('app_elearning_show', {'id': elearning.id}) }}">Show</a>
+                    <a class="btn btn-sm btn-warning" href="{{ path('app_elearning_edit', {'id': elearning.id}) }}">Edit</a>
+>>>>>>> Stashed changes
                 </td>
             </tr>
         {% else %}
             <tr>
+<<<<<<< Updated upstream
                 <td colspan="10">no records found</td>
+=======
+                <td colspan="12" class="text-center">No records found</td>
+>>>>>>> Stashed changes
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
+<<<<<<< Updated upstream
     <a href="{{ path('app_elearning_new') }}">Create new</a>
+=======
+    <a class="btn btn-success" href="{{ path('app_elearning_new') }}">Create New</a>
+
+>>>>>>> Stashed changes
 {% endblock %}

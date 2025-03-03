@@ -1,0 +1,24 @@
+1/ Projet "E-BIKE"
+Cycle des vie adequat: 
+Le client ne parvient pas à cerner précisément ses besoins et souhaite valider les interfaces avant la réalisation. 
+Justification:
+Ou on a ici le Le modèle de prototypage qui permet d'affiner les spécifications en développant des prototypes successifs et en impliquant le client dans le processus.
+
+2/ Projet Timeline
+Le cycle de vie adéquat : Cascade
+Justification:
+Puisque le modèle en cascade est linéaire et structuré, avec des tapes successives sans retour en arriere. Il est adapté aux projets bien définis et dont les besoins sont clairs des le départ.
+
+3/ Projet Insula Injection:
+Cycle de vie adéquat : Cycle en V
+
+Justification : Puisque c'est un projet qui necessite un haut niveau de fiabilité et de validation constante. Le modèle en V est idéal car il assure une vérification et une validation à chaque étape, garantissant la sécurité et la conformité du système.
+
+4/ Projet Administration Rapide:
+
+Cycle de vie adequat: Incremental
+Justification: 
+puisque c'est un bbprojet complexe il necessite une validation a chaque iteration 
+
+5/ Cycle de vie adéquat : Cycle en V
+Justification : L’OMS exige un modèle basé sur une pile de tests, ce qui correspond au modèle en V. Ce modèle garantit un développement rigoureux avec des tests à chaque phase, assurant ainsi la fiabilité et l'efficac

@@ -10,6 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+<<<<<<< Updated upstream
+=======
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+>>>>>>> Stashed changes
 
 #[Route('/reclamation')]
 final class ReclamationController extends AbstractController
@@ -26,14 +30,22 @@ final class ReclamationController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $reclamation = new Reclamation();
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
         $form = $this->createForm(ReclamationType::class, $reclamation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($reclamation);
             $entityManager->flush();
+<<<<<<< Updated upstream
 
             return $this->redirectToRoute('app_reclamation_index', [], Response::HTTP_SEE_OTHER);
+=======
+            return $this->redirectToRoute('app_elearning_front', [], Response::HTTP_SEE_OTHER);
+>>>>>>> Stashed changes
         }
 
         return $this->render('reclamation/new.html.twig', [

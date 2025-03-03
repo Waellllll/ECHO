@@ -1,0 +1,29 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Create New Article{% endblock %}
+
+{% block body %}
+    <div class="container mt-3">
+        
+
+        <!-- Create Article Form -->
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Article Details</h4>
+
+                <!-- Include the form for creating a new article -->
+                {{ include('back/article/_form.html.twig') }}
+
+                <hr>
+
+                <!-- Navigation Buttons -->
+                <div class="d-flex justify-content-between">
+                    <a href="{{ path('app_articleback_index') }}" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-arrow-left mr-2"></i>Back to Articles List
+                    </a>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

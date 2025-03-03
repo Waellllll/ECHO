@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Article{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-md-6 offset-md-3">
+                <h1 class="text-center">What's on Your Mind..?</h1>
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                <div class="form-group">
+                    {{ form_row(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Enter article description'}}) }}
+                </div>
+                <div class="form-group">
+                    {{ form_row(form.imageFile, {'attr': {'class': 'form-control-file'}}) }}
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">{{ button_label|default('Create') }}</button>
+                {{ form_end(form) }}
+                <div class="text-center mt-3">
+                    <a href="{{ path('app_article_index') }}" class="btn btn-secondary">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+     <footer class="bg-dark text-light py-3 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <p class="m-0" style="font-family: {{ base_font_family|default('Arial, sans-serif') }}; font-size: {{ base_font_size|default('14px') }};">
+                        &copy; {{ "now"|date("Y") }} Your Company. All rights reserved.
+                    </p>
+                    <p style="font-family: {{ base_font_family|default('Arial, sans-serif') }}; font-size: {{ base_font_size|default('14px') }};">
+                        <a href="#" class="text-light">Privacy Policy</a> | <a href="#" class="text-light">Terms of Service</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+{% endblock %}

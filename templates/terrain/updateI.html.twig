@@ -1,0 +1,194 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Terrain et Interventions{% endblock %}
+
+{% block body %}
+<style>
+body {
+    background-color: #f8fdf8;
+    font-family: Arial, sans-serif;
+    color: #2d6a4f;
+}
+
+
+
+/* Formulaire d'ajout d'intervention */
+.add-intervention-form {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.image-item p.name-surname {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2d6a4f;
+    margin-bottom: 10px;
+}
+
+.image-item {
+    width: 500px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    text-align: center;
+    border: 2px solid #2d6a4f;
+    position: relative;
+}
+
+/* Titre du formulaire */
+.add-intervention-form h4 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2d6a4f;
+    margin-bottom: 15px;
+    text-align: center;
+}
+.image-item img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.image-item p {
+    font-size: 1rem;
+    color: #1b4332;
+    margin-top: 10px;
+}
+/* Style des champs du formulaire */
+.add-intervention-form .form-control {
+    border: 2px solid #2d6a4f;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.add-intervention-form .form-control:focus {
+    border-color: #1b4332;
+    box-shadow: 0 0 5px rgba(43, 111, 75, 0.5);
+}
+
+/* Style du bouton de soumission */
+.add-intervention-form .btn-info {
+    background-color: #2d6a4f;
+    border-color: #1b4332;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    width: 100%;
+}
+
+.add-intervention-form .btn-info:hover {
+    background-color: #1b4332;
+    border-color: #0f3a25;
+}
+
+/* Espace supplémentaire entre les champs et le bouton */
+.add-intervention-form .form-group {
+    margin-bottom: 15px;
+}
+
+/* Affichage de la validation ou des erreurs */
+.add-intervention-form .form-errors {
+    color: #d9534f;
+    font-size: 0.875rem;
+}
+
+/* Post Image */
+.post-image img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* Post Header */
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-header p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2d6a4f;
+}
+
+/* Interventions Container */
+.interventions-container {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 2px solid #d9d9d9;
+}
+
+.intervention {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.post-container {
+    position: relative; /* Ajoutez ceci */
+    background-color: #ffffff;
+    border: 2px solid #2d6a4f;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+    
+
+.intervention p {
+    color: #1b4332;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* Button Styles */
+.delete-icon, .edit-icon, .intervention-icon {
+    background-color: #5bc0de;
+    color: white;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.delete-icon:hover, .edit-icon:hover, .intervention-icon:hover {
+    background-color: #31b0d5;
+}
+
+/* Additional Styling */
+.mt-2 { margin-top: 1rem; }
+</style>
+
+
+
+                 <div class="add-intervention-form">
+                    <h4>Modifier intervention</h4>
+                    {{ form_start(form) }}
+                        {{ form_row(form.decr) }}
+                        <button type="submit" class="btn btn-info mt-2 text-white">Submit</button>
+                    {{ form_end(form) }}
+                </div>
+            
+             
+{% endblock %}

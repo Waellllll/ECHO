@@ -1,0 +1,58 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}New Reservation{% endblock %}
+
+{% block body %}
+  
+    <h1>Update Reservation</h1>
+
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+         {% if app.user %}
+           <div style="text-align: center; margin-bottom: 20px; color: #666;">
+               Reservation for: {{ app.user.nom }} {{ app.user.prenom }}
+           </div>
+       {% endif %}
+
+        <div>
+            {{ form_label(form.contactEmail) }}
+            {{ form_widget(form.contactEmail) }}
+            {{ form_errors(form.contactEmail) }}
+        </div>
+
+        <div>
+            {{ form_label(form.contactphone) }}
+            {{ form_widget(form.contactphone) }}
+            {{ form_errors(form.contactphone) }}
+        </div>
+
+        <div>
+            {{ form_label(form.reservationDate) }}
+            {{ form_widget(form.reservationDate) }}
+            {{ form_errors(form.reservationDate) }}
+        </div>
+
+        <div>
+            {{ form_label(form.numberOfAttends) }}
+            {{ form_widget(form.numberOfAttends) }}
+            {{ form_errors(form.numberOfAttends) }}
+        </div>
+
+        <div>
+            {{ form_label(form.paymentStatus) }}
+            {{ form_widget(form.paymentStatus) }}
+            {{ form_errors(form.paymentStatus) }}
+        </div>
+
+        <div>
+            {{ form_label(form.workshopTitle) }}
+            {{ form_widget(form.workshopTitle) }}
+            {{ form_errors(form.workshopTitle) }}
+        </div>
+
+        <input type="submit" value="Update Reservation">
+
+    {{ form_end(form) }}
+
+    <a href="{{ path('app_reservation_index') }}">Back to list</a>
+{% endblock %}

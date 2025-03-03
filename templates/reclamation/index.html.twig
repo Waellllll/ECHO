@@ -11,10 +11,17 @@
                 <th>Id</th>
                 <th>Title</th>
                 <th>Description</th>
+<<<<<<< Updated upstream
                 <th>Status</th>
                 <th>Created_at</th>
                 <th>Updated_at</th>
                 <th>actions</th>
+=======
+                <th>Created_at</th>
+                <th>Updated_at</th>
+                <th>Evidence</th>
+                <th>Actions</th>
+>>>>>>> Stashed changes
             </tr>
         </thead>
         <tbody>
@@ -23,10 +30,25 @@
                 <td>{{ reclamation.id }}</td>
                 <td>{{ reclamation.title }}</td>
                 <td>{{ reclamation.description }}</td>
+<<<<<<< Updated upstream
                 <td>{{ reclamation.status }}</td>
                 <td>{{ reclamation.createdAt ? reclamation.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ reclamation.updatedAt ? reclamation.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
+=======
+                <td>{{ reclamation.createdAt ? reclamation.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ reclamation.updatedAt ? reclamation.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    {% if reclamation.evidence %}
+                        <a href="{{ asset('uploads/evidence/' ~ reclamation.evidence) }}" target="_blank">View Evidence</a>
+                    {% else %}
+                        No file uploaded
+                    {% endif %}
+
+
+                </td>
+                <td>
+>>>>>>> Stashed changes
                     <a href="{{ path('app_reclamation_show', {'id': reclamation.id}) }}">show</a>
                     <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}">edit</a>
                 </td>
@@ -38,6 +60,9 @@
         {% endfor %}
         </tbody>
     </table>
+<<<<<<< Updated upstream
 
     <a href="{{ path('app_reclamation_new') }}">Create new</a>
+=======
+>>>>>>> Stashed changes
 {% endblock %}

@@ -1,5 +1,6 @@
 {% extends 'baseback.html.twig' %}
 
+<<<<<<< Updated upstream
 {% block title %}Elearning{% endblock %}
 
 {% block body %}
@@ -9,6 +10,17 @@
         <tbody>
             <tr>
                 <th>Id</th>
+=======
+{% block title %}Elearning Details{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4">Elearning Details</h1>
+
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th>ID</th>
+>>>>>>> Stashed changes
                 <td>{{ elearning.id }}</td>
             </tr>
             <tr>
@@ -20,6 +32,7 @@
                 <td>{{ elearning.description }}</td>
             </tr>
             <tr>
+<<<<<<< Updated upstream
                 <th>Content_type</th>
                 <td>{{ elearning.contentType.value }}</td>
             </tr>
@@ -42,13 +55,83 @@
             <tr>
                 <th>Updated_at</th>
                 <td>{{ elearning.updatedAt ? elearning.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+=======
+            <th>Categories</th>
+            <td>
+                    {% if elearning.categories is not empty %}
+                        {% for category in elearning.categories %}
+                            {{ category.name }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        No Categories
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Content Type</th>
+                <td>{{ elearning.contentType }}</td>
+            </tr>
+            <tr>
+                <th>Content URL</th>
+                <td>
+                    {% if elearning.contentUrl %}
+                        <a href="{{ elearning.contentUrl }}" target="_blank">{{ elearning.contentUrl }}</a>
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Duration</th>
+                <td>{{ elearning.duration }} min</td>
+            </tr>
+            <tr>
+                <th>Difficulty Level</th>
+                <td>{{ elearning.difficultyLevel|capitalize }}</td>
+            </tr>
+            <tr>
+                <th>Created At</th>
+                <td>{{ elearning.createdAt ? elearning.createdAt|date('Y-m-d H:i:s') : 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Updated At</th>
+                <td>{{ elearning.updatedAt ? elearning.updatedAt|date('Y-m-d H:i:s') : 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>File</th>
+                <td>
+                    {% if elearning.filePath %}
+                        {% set fileExt = elearning.filePath|split('.')|last %}
+                        {% if fileExt in ['png', 'jpeg', 'jpg'] %}
+                            <img src="{{ asset('uploads/' ~ elearning.filePath) }}" alt="File" style="max-width: 200px;">
+                        {% elseif fileExt == 'pdf' %}
+                            <a href="{{ asset('uploads/' ~ elearning.filePath) }}" target="_blank">📄 View PDF</a>
+                        {% else %}
+                            <a href="{{ asset('uploads/' ~ elearning.filePath) }}" download>📥 Download File</a>
+                        {% endif %}
+                    {% else %}
+                        No file uploaded.
+                    {% endif %}
+                </td>
+>>>>>>> Stashed changes
             </tr>
         </tbody>
     </table>
 
+<<<<<<< Updated upstream
     <a href="{{ path('app_elearning_index') }}">back to list</a>
 
     <a href="{{ path('app_elearning_edit', {'id': elearning.id}) }}">edit</a>
 
     {{ include('elearning/_delete_form.html.twig') }}
+=======
+    <div class="mt-3">
+        <a class="btn btn-primary" href="{{ path('app_elearning_index') }}">🔙 Back to list</a>
+        <a class="btn btn-warning" href="{{ path('app_elearning_edit', {'id': elearning.id}) }}">✏️ Edit</a>
+    </div>
+
+    <div class="mt-3">
+        {{ include('elearning/_delete_form.html.twig') }}
+    </div>
+>>>>>>> Stashed changes
 {% endblock %}

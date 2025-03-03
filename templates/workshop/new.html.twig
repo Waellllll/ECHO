@@ -1,0 +1,137 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Workshop{% endblock %}
+
+{% block body %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h1 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    form {
+        background-color: #ffffff;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="number"],
+    textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    a {
+        display: inline-block;
+        margin-top: 20px;
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    .error {
+        color: red;
+        font-size: 0.9em;
+    }
+</style>
+    <h1>Create new Workshop</h1>
+
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+    {% if app.user %}
+        <div class="workshop-info">
+            Workshop for: {{ app.user.nom }} {{ app.user.prenom }}
+        </div>
+    {% endif %}
+    <div>
+        {{ form_label(form.title) }}
+        {{ form_widget(form.title) }}
+        {{ form_errors(form.title) }}
+    </div>
+
+    <div>
+        {{ form_label(form.date) }}
+        {{ form_widget(form.date) }}
+        {{ form_errors(form.date) }}
+    </div>
+
+    <div>
+        {{ form_label(form.duration) }}
+        {{ form_widget(form.duration) }}
+        {{ form_errors(form.duration) }}
+    </div>
+
+    <div>
+        {{ form_label(form.location) }}
+        {{ form_widget(form.location) }}
+        {{ form_errors(form.location) }}
+    </div>
+
+    <div>
+        {{ form_label(form.instractor) }}
+        {{ form_widget(form.instractor) }}
+        {{ form_errors(form.instractor) }}
+    </div>
+
+    <div>
+        {{ form_label(form.targetAudience) }}
+        {{ form_widget(form.targetAudience) }}
+        {{ form_errors(form.targetAudience) }}
+    </div>
+
+    <div>
+        {{ form_label(form.topicsCovered) }}
+        {{ form_widget(form.topicsCovered) }}
+        {{ form_errors(form.topicsCovered) }}
+    </div>
+
+    <div>
+        {{ form_label(form.materialsProvided) }}
+        {{ form_widget(form.materialsProvided) }}
+        {{ form_errors(form.materialsProvided) }}
+    </div>
+
+    <input type="submit" value="Create Workshop">
+
+{{ form_end(form) }}
+
+    <a href="{{ path('app_workshop_indexf') }}">back to list</a>
+{% endblock %}

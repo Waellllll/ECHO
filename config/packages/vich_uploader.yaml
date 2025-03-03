@@ -1,0 +1,7 @@
+vich_uploader:
+    db_driver: orm
+    mappings:
+        reclamation_evidence:
+            uri_prefix: /uploads/evidence
+            upload_destination: '%kernel.project_dir%/public/uploads/evidence'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
