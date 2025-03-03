@@ -83,50 +83,58 @@ final class ArticleController extends AbstractController
         ]);
     }
 
-    // #[Route('front/{id}', name: 'app_article_show', methods: ['GET'])]
-    // public function show(Article $article): Response
-    // {
-    //     return $this->render('front/article/show.html.twig', [
-    //         'article' => $article,
-    //     ]);
-    // }
-
-    #[Route('/front/article/{id}/edit', name: 'app_article_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Article $article, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+    #[Route('front/{id}', name: 'app_article_show', methods: ['GET'])]
+    public function show(Article $article): Response
     {
-        $form = $this->createForm(ArticleType::class, $article);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $imageFile = $form->get('imageFile')->getData();
-
-            if ($imageFile) {
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
-
-                try {
-                    $imageFile->move(
-                        $this->getParameter('kernel.project_dir') . '/public/images/front',
-                        $newFilename
-                    );
-                } catch (SQLite3Exception ) {
-                    // Handle file upload error
-                }
-
-                $article->setImage($newFilename);
-            }
-
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('front/article/edit.html.twig', [
+        return $this->render('front/article/show.html.twig', [
             'article' => $article,
-            'form' => $form->createView(),
         ]);
     }
+
+   #[Route('/front/article/{id}/edit', name: 'app_article_edit', methods: ['GET', 'POST'])]
+public function edit(Request $request, Article $article, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+{
+    $form = $this->createForm(ArticleType::class, $article);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $imageFile = $form->get('imageFile')->getData();
+
+        if ($imageFile) {
+            $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $safeFilename = $slugger->slug($originalFilename);
+            $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+
+            try {
+                $targetDirectory = $this->getParameter('kernel.project_dir') . '/public/images/front';
+                if (!is_dir($targetDirectory)) {
+                    mkdir($targetDirectory, 0755, true); // Ensure the directory exists
+                }
+
+                $imageFile->move(
+                    $targetDirectory,
+                    $newFilename
+                );
+
+                $article->setImage($newFilename); // Update article's image property
+            } catch (\Exception $e) {
+                // Log or handle the error
+                $this->addFlash('error', 'An error occurred while uploading the file.');
+                return $this->redirectToRoute('app_article_edit', ['id' => $article->getId()]);
+            }
+        }
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    return $this->render('front/article/edit.html.twig', [
+        'article' => $article,
+        'form' => $form->createView(),
+    ]);
+}
+
 
     #[Route('front/{id}', name: 'app_article_delete', methods: ['POST'])]
     public function delete(Request $request, Article $article, EntityManagerInterface $entityManager): Response
