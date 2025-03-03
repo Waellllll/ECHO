@@ -16,6 +16,25 @@ class ElearningRepository extends ServiceEntityRepository
         parent::__construct($registry, Elearning::class);
     }
 
+    public function searchByFilters(?int $categoryId, ?string $searchTerm): array
+    {
+    $qb = $this->createQueryBuilder('e');
+
+    if ($categoryId) {
+        $qb->join('e.categories', 'c')
+        ->andWhere('c.id = :categoryId')
+        ->setParameter('categoryId', $categoryId);
+    }
+
+    if ($searchTerm) {
+        $qb->andWhere('e.title LIKE :search OR e.description LIKE :search')
+        ->setParameter('search', '%' . $searchTerm . '%');
+    }
+
+    return $qb->getQuery()->getResult();
+    }
+
+
     //    /**
     //     * @return Elearning[] Returns an array of Elearning objects
     //     */

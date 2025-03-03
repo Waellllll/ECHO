@@ -52,20 +52,19 @@ class Elearning
     #[ORM\Column(type: Types::STRING, nullable: true)]
     private ?string $file_path = null;
 
-    /**
-     * @var Collection<int, Reclamation>
-     */
     #[ORM\OneToMany(targetEntity: Reclamation::class, mappedBy: 'article')]
     private Collection $reclamations;
 
-    #[ORM\ManyToOne(inversedBy: 'elearnings')]
-    private ?User $user_e = null;
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'elearnings', cascade: ['persist'])]
+    #[ORM\JoinTable(name: 'elearning_category')]
+    private Collection $categories;
 
     public function __construct()
     {
         $this->created_at = new \DateTimeImmutable();
         $this->updated_at = new \DateTimeImmutable();
         $this->reclamations = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -81,6 +80,7 @@ class Elearning
     public function setTitle(string $title): static
     {
         $this->title = $title;
+        $this->updated_at = new \DateTimeImmutable();
         return $this;
     }
 
@@ -92,20 +92,21 @@ class Elearning
     public function setDescription(string $description): static
     {
         $this->description = $description;
+        $this->updated_at = new \DateTimeImmutable();
         return $this;
     }
 
     public function getContentType(): ?string
-{
-    return $this->content_type;
-}
+    {
+        return $this->content_type;
+    }
 
-public function setContentType(string $content_type): static
-{
-    $this->content_type = $content_type;
-    return $this;
-}
-
+    public function setContentType(string $content_type): static
+    {
+        $this->content_type = $content_type;
+        $this->updated_at = new \DateTimeImmutable();
+        return $this;
+    }
 
     public function getContentUrl(): ?string
     {
@@ -115,6 +116,7 @@ public function setContentType(string $content_type): static
     public function setContentUrl(string $content_url): static
     {
         $this->content_url = $content_url;
+        $this->updated_at = new \DateTimeImmutable();
         return $this;
     }
 
@@ -126,6 +128,7 @@ public function setContentType(string $content_type): static
     public function setDuration(int $duration): static
     {
         $this->duration = $duration;
+        $this->updated_at = new \DateTimeImmutable();
         return $this;
     }
 
@@ -137,6 +140,7 @@ public function setContentType(string $content_type): static
     public function setDifficultyLevel(string $difficulty_level): static
     {
         $this->difficulty_level = $difficulty_level;
+        $this->updated_at = new \DateTimeImmutable();
         return $this;
     }
 
@@ -164,12 +168,10 @@ public function setContentType(string $content_type): static
     public function setFilePath(?string $file_path): static
     {
         $this->file_path = $file_path;
+        $this->updated_at = new \DateTimeImmutable();
         return $this;
     }
 
-    /**
-     * @return Collection<int, Reclamation>
-     */
     public function getReclamations(): Collection
     {
         return $this->reclamations;
@@ -194,15 +196,39 @@ public function setContentType(string $content_type): static
         return $this;
     }
 
-    public function getUserE(): ?User
+    public function getCategories(): Collection
     {
-        return $this->user_e;
+        return $this->categories;
     }
 
-    public function setUserE(?User $user_e): static
+    public function setCategories(Collection $categories): static
     {
-        $this->user_e = $user_e;
-
+        $this->categories = $categories;
         return $this;
+    }
+
+    public function addCategory(Category $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+            $category->addElearning($this);
+        }
+        return $this;
+    }
+
+    public function removeCategory(Category $category): static
+    {
+        if ($this->categories->removeElement($category)) {
+            $category->removeElearning($this);
+        }
+        return $this;
+    }
+
+    public function clearCategories(): void
+    {
+        foreach ($this->categories as $category) {
+            $category->removeElearning($this);
+        }
+        $this->categories->clear();
     }
 }

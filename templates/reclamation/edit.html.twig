@@ -32,7 +32,8 @@
 
         input[type="text"],
         textarea,
-        select {
+        select,
+        input[type="file"] {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
@@ -82,7 +83,42 @@
                         <h5 class="card-title mb-0">Update Reclamation</h5>
                     </div>
                     <div class="card-body">
-                        {{ include('reclamation/_form.html.twig', {'button_label': 'Update'}) }}
+                        {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+
+                        <div>
+                            {{ form_label(form.title) }}
+                            {{ form_widget(form.title) }}
+                            {{ form_errors(form.title) }}
+                        </div>
+
+                        <div>
+                            {{ form_label(form.description) }}
+                            {{ form_widget(form.description) }}
+                            {{ form_errors(form.description) }}
+                        </div>
+
+                        <div>
+                            {{ form_label(form.article) }}
+                            {{ form_widget(form.article) }}
+                            {{ form_errors(form.article) }}
+                        </div>
+
+                        <div>
+                            {{ form_label(form.evidenceFile) }}
+                            {{ form_widget(form.evidenceFile) }}
+                            {{ form_errors(form.evidenceFile) }}
+                        </div>
+
+                        {% if reclamation.evidence %}
+                            <div>
+                                <label>Current Evidence:</label><br>
+                                <a href="{{ asset('uploads/reclamations/' ~ reclamation.evidence) }}" target="_blank">View Current Evidence</a>
+                            </div>
+                        {% endif %}
+
+                        <input type="submit" value="Update">
+
+                        {{ form_end(form) }}
                     </div>
                 </div>
             </div>

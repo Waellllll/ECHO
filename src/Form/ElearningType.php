@@ -3,17 +3,19 @@
 namespace App\Form;
 
 use App\Entity\Elearning;
+use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\PositiveOrZero;
 use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class ElearningType extends AbstractType
 {
@@ -34,8 +36,8 @@ class ElearningType extends AbstractType
                 'choices' => [
                     'Pdf' => 'pdf',
                     'Video' => 'video',
-                    'Image' => 'Image',
-                    'Quiz' => 'Quiz',
+                    'Image' => 'image',
+                    'Quiz' => 'quiz',
                 ],
             ])
             ->add('content_url', TextType::class, [
@@ -55,24 +57,31 @@ class ElearningType extends AbstractType
                     'Hard' => 'hard',
                 ],
             ])
+            ->add('categories', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'expanded' => true,
+                'required' => false,
+            ])
             ->add('file_path', FileType::class, [
                 'label' => 'Upload File',
-                'mapped' => false,  
+                'mapped' => false,
                 'constraints' => [
                     new File([
-                        'maxSize' => '100M', 
+                        'maxSize' => '100M',
                         'mimeTypes' => [
-                            'application/pdf',                       // PDF files
-                            'image/png',                             // PNG images
-                            'image/jpeg',                            // JPEG images
-                            'video/mp4',                             // MP4 videos
-                            'application/msword',                   // Word documents (doc)
-                            'text/plain',                            // Text files (txt)
+                            'application/pdf',
+                            'image/png',
+                            'image/jpeg',
+                            'video/mp4',
+                            'application/msword',
+                            'text/plain',
                         ],
-                        'mimeTypesMessage' => 'Please upload a valid file (PDF, PNG, JPEG, MP4, DOC, DOCX, XLS, XLSX, TXT)',
+                        'mimeTypesMessage' => 'Please upload a valid file (PDF, PNG, JPEG, MP4, DOC, TXT)',
                     ]),
                 ],
-                'required' => false, // Ensure it's not required
+                'required' => false,
             ]);
     }
 

@@ -13,7 +13,8 @@
                 <th>Description</th>
                 <th>Created_at</th>
                 <th>Updated_at</th>
-                <th>actions</th>
+                <th>Evidence</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -24,6 +25,15 @@
                 <td>{{ reclamation.description }}</td>
                 <td>{{ reclamation.createdAt ? reclamation.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ reclamation.updatedAt ? reclamation.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    {% if reclamation.evidence %}
+                        <a href="{{ asset('uploads/evidence/' ~ reclamation.evidence) }}" target="_blank">View Evidence</a>
+                    {% else %}
+                        No file uploaded
+                    {% endif %}
+
+
+                </td>
                 <td>
                     <a href="{{ path('app_reclamation_show', {'id': reclamation.id}) }}">show</a>
                     <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}">edit</a>

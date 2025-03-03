@@ -27,12 +27,22 @@
                 <th>Updated_at</th>
                 <td>{{ reclamation.updatedAt ? reclamation.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
+            <tr>
+                <th>Evidence</th>
+                <td>
+                 {% if reclamation.evidence %}
+                    <a href="{{ asset('uploads/evidence/' ~ reclamation.evidenceFile) }}" target="_blank">View Evidence</a>
+                {% else %}
+                    No file uploaded
+                {% endif %}
+
+                </td>
+            </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_reclamation_index') }}">back to list</a>
-
-    <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}">edit</a>
+    <a href="{{ path('app_reclamation_index') }}">Back to list</a>
+    <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}">Edit</a>
 
     {{ include('reclamation/_delete_form.html.twig') }}
 {% endblock %}

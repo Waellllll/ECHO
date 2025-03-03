@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Category; 
+use App\Repository\CategoryRepository;
 use App\Entity\Elearning;
 use App\Form\ElearningType;
 use App\Repository\ElearningRepository;
@@ -11,8 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[Route('/elearning')]
 final class ElearningController extends AbstractController
@@ -26,40 +27,54 @@ final class ElearningController extends AbstractController
     }
 
     #[Route('/front', name: 'app_elearning_front', methods: ['GET'])]
-    public function front(ElearningRepository $elearningRepository): Response
+    public function front(ElearningRepository $elearningRepository, CategoryRepository $categoryRepository): Response
     {
         return $this->render('elearning/showfront.html.twig', [
             'elearnings' => $elearningRepository->findAll(),
+            'categories' => $categoryRepository->findAll(), // ✅ Pass categories to avoid Twig errors
         ]);
     }
 
     #[Route('/new', name: 'app_elearning_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, Security $security): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository): Response
     {
-
         $elearning = new Elearning();
         $form = $this->createForm(ElearningType::class, $elearning);
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
-            // Set the creator to the currently logged-in user
-            $user = $security->getUser();
-            $elearning->setUserE($user); // Use setUserE
-    
             /** @var UploadedFile|null $file_path */
             $file_path = $form->get('file_path')->getData();
-        
-            if ($file_path) { // Handle file upload
+    
+            if ($file_path) {
                 $uploadsDirectory = $this->getParameter('uploads_directory');
                 $newFilename = uniqid().'.'.$file_path->guessExtension();
-        
                 $file_path->move($uploadsDirectory, $newFilename);
                 $elearning->setFilePath($newFilename);
             }
-        
+    
+            // Handle new category creation and assignment
+            $newCategoryName = $request->request->get('new_category');
+            if ($newCategoryName) {
+                $existingCategory = $categoryRepository->findOneBy(['name' => $newCategoryName]);
+                if (!$existingCategory) {
+                    $newCategory = new Category();
+                    $newCategory->setName($newCategoryName);
+                    $entityManager->persist($newCategory);
+                    $entityManager->flush();
+                    $elearning->addCategory($newCategory);
+                } else {
+                    $elearning->addCategory($existingCategory);
+                }
+            }
+    
+            foreach ($form->get('categories')->getData() as $category) {
+                $elearning->addCategory($category);
+            }
+    
             $entityManager->persist($elearning);
             $entityManager->flush();
-        
+    
             return $this->redirectToRoute('app_elearning_index', [], Response::HTTP_SEE_OTHER);
         }
     
@@ -76,6 +91,7 @@ final class ElearningController extends AbstractController
             'elearning' => $elearning,
         ]);
     }
+
     #[Route('/front/{id}', name: 'app_elearning_showfront', methods: ['GET'])]
     public function showfront(Elearning $elearning): Response
     {
@@ -85,28 +101,46 @@ final class ElearningController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_elearning_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Elearning $elearning, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Elearning $elearning, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository): Response
     {
         $form = $this->createForm(ElearningType::class, $elearning);
-        $form->handleRequest($request); 
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-    /** @var UploadedFile|null $file_file */
-    $file_path = $form->get('file_path')->getData();
+            /** @var UploadedFile|null $file_path */
+            $file_path = $form->get('file_path')->getData();
+        
+            if ($file_path) {
+                $uploadsDirectory = $this->getParameter('uploads_directory');
+                $newFilename = uniqid().'.'.$file_path->guessExtension();
+                $file_path->move($uploadsDirectory, $newFilename);
+                $elearning->setFilePath($newFilename);
+            }
 
-    if ($file_path) { // Only process if a file was uploaded
-        $uploadsDirectory = $this->getParameter('uploads_directory');
-        $newFilename = uniqid().'.'.$file_path->guessExtension();
+            $elearning->clearCategories();
 
-        $file_path->move($uploadsDirectory, $newFilename);
-        $elearning->setFilePath($newFilename);
-    }
+            $newCategoryName = $request->request->get('new_category'); 
+            if (!empty($newCategoryName)) {
+                $existingCategory = $categoryRepository->findOneBy(['name' => $newCategoryName]);
+                if (!$existingCategory) {
+                    $newCategory = new Category();
+                    $newCategory->setName($newCategoryName);
+                    $entityManager->persist($newCategory);
+                    $elearning->addCategory($newCategory);
+                } else {
+                    $elearning->addCategory($existingCategory);
+                }
+            }
 
-    $entityManager->persist($elearning);
-    $entityManager->flush();
+            foreach ($form->get('categories')->getData() as $category) {
+                $elearning->addCategory($category);
+            }
 
-    return $this->redirectToRoute('app_elearning_index', [], Response::HTTP_SEE_OTHER);
-}
+            $entityManager->persist($elearning);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_elearning_index', [], Response::HTTP_SEE_OTHER);
+        }
 
         return $this->render('elearning/edit.html.twig', [
             'elearning' => $elearning,
@@ -123,13 +157,15 @@ final class ElearningController extends AbstractController
         }
         return $this->redirectToRoute('app_elearning_index', [], Response::HTTP_SEE_OTHER);
     }
-    #[Route('/{id}', name: 'app_elearning_deletef', methods: ['POST'])]
-    public function deletef(Request $request, Elearning $elearning, EntityManagerInterface $entityManager): Response
+
+    #[Route('/api/elearning/search', name: 'api_elearning_search', methods: ['GET'])]
+    public function search(Request $request, ElearningRepository $repository): JsonResponse
     {
-        if ($this->isCsrfTokenValid('delete'.$elearning->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($elearning);
-            $entityManager->flush();
-        }
-        return $this->redirectToRoute('app_elearning_front', [], Response::HTTP_SEE_OTHER);
+        $categoryId = $request->query->get('category');
+        $searchTerm = $request->query->get('search');
+
+        $elearnings = $repository->searchByFilters($categoryId, $searchTerm);
+
+        return $this->json($elearnings, 200, [], ['groups' => 'elearning:read']);
     }
 }

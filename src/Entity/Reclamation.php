@@ -6,8 +6,13 @@ use App\Repository\ReclamationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 #[ORM\Entity(repositoryClass: ReclamationRepository::class)]
+#[ORM\HasLifecycleCallbacks] // Ensures lifecycle methods work
+#[Vich\Uploadable]
 class Reclamation
 {
     #[ORM\Id]
@@ -17,28 +22,52 @@ class Reclamation
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "Title cannot be blank.")]
-    #[Assert\Length(min: 5, max: 255, minMessage: "Title must be at least {{ limit }} characters long.", maxMessage: "Title cannot exceed {{ limit }} characters.")]
+    #[Assert\Length(min: 5, max: 255)]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank(message: "Description cannot be blank.")]
-    #[Assert\Length(min: 10, minMessage: "Description must be at least {{ limit }} characters long.")]
+    #[Assert\Length(min: 10)]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    private $created_at;
+    private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    private $updated_at;
+    private ?\DateTimeImmutable $updated_at = null;
 
     #[ORM\ManyToOne(inversedBy: 'reclamations')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotNull(message: "A related article (e-learning) must be selected.")]
+    #[Assert\NotNull]
     private ?Elearning $article = null;
+
+    // VichUploader File Handling
+    #[Vich\UploadableField(mapping: "reclamation_evidence", fileNameProperty: "evidence")]
+    #[Assert\File(
+        maxSize: "5M",
+        mimeTypes: ["image/jpeg", "image/png", "application/pdf"]
+    )]
+    private ?File $evidenceFile = null;
+
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private ?string $evidence = null;
 
     public function __construct()
     {
         $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTimeImmutable();
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTimeImmutable();
+    }
+
+    #[ORM\PreUpdate]
+    public function setUpdatedAtValue(): void
+    {
         $this->updated_at = new \DateTimeImmutable();
     }
 
@@ -55,7 +84,6 @@ class Reclamation
     public function setTitle(string $title): static
     {
         $this->title = $title;
-
         return $this;
     }
 
@@ -67,7 +95,6 @@ class Reclamation
     public function setDescription(string $description): static
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -76,23 +103,9 @@ class Reclamation
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
-    {
-        $this->created_at = $created_at;
-
-        return $this;
-    }
-
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updated_at;
-    }
-
-    public function setUpdatedAt(\DateTimeImmutable $updated_at): static
-    {
-        $this->updated_at = $updated_at;
-
-        return $this;
     }
 
     public function getArticle(): ?Elearning
@@ -103,7 +116,31 @@ class Reclamation
     public function setArticle(?Elearning $article): static
     {
         $this->article = $article;
-
         return $this;
+    }
+
+    // VichUploader Methods
+    public function getEvidenceFile(): ?File
+    {
+        return $this->evidenceFile;
+    }
+
+    public function setEvidenceFile(?File $evidenceFile = null): void
+    {
+        $this->evidenceFile = $evidenceFile;
+
+        if ($evidenceFile) {
+            $this->updated_at = new \DateTimeImmutable();
+        }
+    }
+
+    public function getEvidence(): ?string
+    {
+        return $this->evidence;
+    }
+
+    public function setEvidence(?string $evidence): void
+    {
+        $this->evidence = $evidence;
     }
 }
